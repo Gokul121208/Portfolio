@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gokul M — Portfolio
 
-## Getting Started
+Next.js 15 · TypeScript · Tailwind v4 · Motion · GSAP · React Three Fiber · Lenis · next-themes.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+npm install
+npm run dev        # http://localhost:3100 with: npm run dev -- -p 3100
+npm test           # unit tests (content, WhatsApp link, contact validation, rate limit)
+npm run e2e        # Playwright smoke tests (set PW_CHROMIUM_PATH to use a local Chromium/Brave)
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Things you will edit
+- **All copy and data:** `src/content/` (profile, services, experience, projects, testimonials).
+- **Placeholders to replace:** testimonials, stats (`profile.stats`) and social links (`profile.socials`) are sample values.
+- **Project videos:** put the file in `public/videos/` and set `video: "/videos/name.mp4"` (optional `poster`) on the project in `src/content/projects.ts`. Until then each project shows a "Video coming soon" slot.
+- **Contact form:** copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (and `CONTACT_FROM` once you verify a domain in Resend). Without a key the form shows a WhatsApp/email fallback.
+- **WhatsApp:** the floating button opens a service menu and sends a prefilled message to +91 9159348778. A true auto-reply bot needs the WhatsApp Business API (or use the WhatsApp Business app's greeting message).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+- Themes: "Night Session" (default) and "Day Session"; tokens live in `src/app/globals.css`.
+- Rate limiting on `/api/contact` is in-memory and per instance, keyed by the client address from platform headers (`x-vercel-forwarded-for`). Off Vercel, add Cloudflare Turnstile or a firewall rule if abuse appears.
+- Motion respects `prefers-reduced-motion` (no WebGL, cursor, scramble or smooth scroll).
