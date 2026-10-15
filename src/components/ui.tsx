@@ -17,7 +17,7 @@ export function SectionHead({ eyebrow, title, intro }: { eyebrow: string; title:
   );
 }
 
-export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: string }) {
+export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: React.ReactNode }) {
   return (
     <section className="relative mx-auto max-w-7xl px-5 pb-12 pt-36 sm:px-8 sm:pt-44">
       <div aria-hidden className="absolute -top-20 right-0 -z-10 h-80 w-80 rounded-full bg-accent2/30 blur-[110px]" />
@@ -27,7 +27,7 @@ export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: st
       <SplitText as="h1" text={title} className="font-display text-5xl font-bold leading-[0.9] tracking-tighter sm:text-8xl" />
       {intro && (
         <Reveal delay={0.3}>
-          <p className="mt-6 max-w-2xl text-lg text-muted">{intro}</p>
+          <p className="mt-6 max-w-3xl text-lg text-muted">{intro}</p>
         </Reveal>
       )}
     </section>

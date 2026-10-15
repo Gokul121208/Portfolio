@@ -230,3 +230,17 @@ test("dark is the default: a stale saved Day choice from an older build is ignor
   await expect(page.locator("html")).toHaveAttribute("data-theme", "day"); // new choice persists
   await ctx.close();
 });
+
+test("projects intro is one paragraph: agency name, then freelance, then content", async ({ page }) => {
+  await page.goto("/projects");
+  const para = page.locator("section").first().locator("p", { hasText: "The Moments Lab AI Marketing Agency" });
+  await expect(para).toHaveCount(1);
+  const text = (await para.innerText()).replace(/\s+/g, " ");
+  const agency = text.indexOf("The Moments Lab AI Marketing Agency");
+  const freelance = text.indexOf("Freelance campaigns");
+  const content = text.indexOf("content, video and lead generation");
+  expect(agency).toBeGreaterThan(-1);
+  expect(freelance).toBeGreaterThan(agency);
+  expect(content).toBeGreaterThan(freelance);
+  await expect(page.getByText("Video showreels are being added")).toHaveCount(0);
+});
