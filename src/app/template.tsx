@@ -1,9 +1,10 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
+import { useReduced } from "@/components/motion/useReduced";
+import { motion } from "motion/react";
 
 // Enter-only transition: App Router unmounts the old page immediately, so exit animations are unreliable.
 export default function Template({ children }: { children: React.ReactNode }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   return (
     <>
       {!reduce && (

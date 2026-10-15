@@ -9,14 +9,16 @@ const MAX_KEYS = 5000;
 
 const hits = new Map<string, number[]>();
 
-function sweep(now: number) {
-  for (const [k, v] of hits) {
-    if (v.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
+let lastSweep = 0;
+// Full scan only once per window; otherwise evict the oldest-inserted key in O(1).
+function makeRoom(now: number) {
+  if (now - lastSweep >= WINDOW_MS) {
+    lastSweep = now;
+    for (const [k, v] of hits) if (v.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
   }
-  // Still too big (all keys active): drop oldest-inserted keys.
-  for (const k of hits.keys()) {
-    if (hits.size < MAX_KEYS) break;
-    hits.delete(k);
+  if (hits.size >= MAX_KEYS) {
+    const oldest = hits.keys().next().value;
+    if (oldest !== undefined) hits.delete(oldest);
   }
 }
 
@@ -26,7 +28,7 @@ export function rateLimit(key: string, now: number = Date.now()): boolean {
     hits.set(key, recent);
     return false;
   }
-  if (!hits.has(key) && hits.size >= MAX_KEYS) sweep(now);
+  if (!hits.has(key) && hits.size >= MAX_KEYS) makeRoom(now);
 
   recent.push(now);
   hits.set(key, recent);
@@ -37,6 +39,8 @@ export function rateLimitSize(): number {
   return hits.size;
 }
 
+// x-vercel-forwarded-for is set by Vercel and cannot be forged by clients. x-real-ip and x-forwarded-for
+// are only trustworthy behind a proxy you control; off Vercel treat all of this as best-effort.
 // Prefer headers set by the hosting platform; the leftmost x-forwarded-for entry is client-controlled,
 // so fall back to the rightmost (added by the nearest trusted proxy).
 export function clientKey(h: Headers): string {

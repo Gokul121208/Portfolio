@@ -1,9 +1,10 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import { useEffect, useRef, useState } from "react";
-import { animate, useInView, useReducedMotion } from "motion/react";
+import { animate, useInView } from "motion/react";
 
 export default function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const [v, setV] = useState(0);

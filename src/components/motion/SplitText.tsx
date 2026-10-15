@@ -1,10 +1,11 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
+import { useReduced } from "@/components/motion/useReduced";
+import { motion } from "motion/react";
 
 type Props = { text: string; className?: string; delay?: number; as?: "h1" | "h2" | "h3" | "p" | "div" | "span" };
 
 export default function SplitText({ text, className, delay = 0, as: Tag = "div" }: Props) {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const words = text.split(" ");
   return (
     <Tag className={className} aria-label={text}>

@@ -11,7 +11,7 @@ export default function Process() {
       {steps.map((s, i) => (
         <Reveal key={s.t} delay={i * 0.08}>
           <div className="h-full rounded-3xl border border-line bg-bg2 p-6">
-            <p className="font-mono text-xs text-accent">0{i + 1}</p>
+            <p className="font-mono text-xs text-accentink">0{i + 1}</p>
             <p className="mt-6 font-display text-2xl font-bold">{s.t}</p>
             <p className="mt-2 text-sm text-muted">{s.d}</p>
           </div>

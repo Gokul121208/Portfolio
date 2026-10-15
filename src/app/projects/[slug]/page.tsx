@@ -28,7 +28,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       <Container className="pb-8 pt-36 sm:pt-44">
-        <Link href="/projects" className="font-mono text-xs uppercase tracking-widest text-muted hover:text-accent">← All projects</Link>
+        <Link href="/projects" className="font-mono text-xs uppercase tracking-widest text-muted hover:text-accentink">← All projects</Link>
         {p.ongoing && <p className="mt-6 w-fit rounded-full bg-accent px-3 py-1 font-mono text-xs uppercase text-onaccent">Ongoing</p>}
         <SplitText as="h1" text={p.name} className="mt-4 font-display text-5xl font-bold leading-[0.9] tracking-tighter sm:text-8xl" />
         <Reveal delay={0.3}><p className="mt-5 max-w-2xl text-xl text-muted">{p.tagline}</p></Reveal>
@@ -36,11 +36,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <Container className="py-8"><Reveal><VideoSlot video={p.video} poster={p.poster} accent={p.accent} title={p.name} /></Reveal></Container>
       <Container className="grid gap-12 py-16 md:grid-cols-[1.2fr_1fr]">
         <Reveal>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">The work</p>
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accentink">The work</p>
           <p className="mt-4 text-lg leading-relaxed">{p.summary}</p>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">Delivered</p>
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accentink">Delivered</p>
           <ul className="mt-4 flex flex-wrap gap-2">
             {p.services.map((s) => <li key={s} className="rounded-full border border-line px-3 py-1.5 font-mono text-xs uppercase tracking-wider">{s}</li>)}
           </ul>

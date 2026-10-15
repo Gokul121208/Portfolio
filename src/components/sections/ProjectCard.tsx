@@ -1,12 +1,13 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import Link from "next/link";
 import { useRef } from "react";
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import type { Project } from "@/content/types";
 import ProjectVisual, { accentVar } from "./ProjectVisual";
 
 export default function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const ref = useRef<HTMLAnchorElement>(null);
   const mx = useSpring(useMotionValue(0), { stiffness: 150, damping: 18 });
   const my = useSpring(useMotionValue(0), { stiffness: 150, damping: 18 });

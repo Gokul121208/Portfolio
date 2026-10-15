@@ -38,9 +38,13 @@ export default function ContactForm() {
       </div>
     );
 
-  const field = "w-full rounded-2xl border border-line bg-bg2 px-4 py-3.5 outline-none transition-colors focus:border-accent";
+  const field = "w-full rounded-2xl border border-line bg-bg2 px-4 py-3.5 outline-none transition-colors focus:border-accentink";
   return (
     <form onSubmit={submit} noValidate className="space-y-4">
+      {/* honeypot: hidden from people, tempting to bots */}
+      <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
+      </div>
       {(["name", "email"] as const).map((n) => (
         <div key={n}>
           <label htmlFor={n} className="mb-2 block font-mono text-xs uppercase tracking-widest text-muted">{n === "name" ? "Your name" : "Email"}</label>
@@ -57,8 +61,8 @@ export default function ContactForm() {
       {state === "fallback" && (
         <div role="alert" className="rounded-2xl border border-accent3 p-4 text-sm">
           Couldn&apos;t send the form right now. Reach me directly:{" "}
-          <a className="text-accent underline" href={buildWhatsAppUrl()} target="_blank" rel="noopener noreferrer">WhatsApp</a> or{" "}
-          <a className="text-accent underline" href={`mailto:${profile.email}`}>{profile.email}</a>.
+          <a className="text-accentink underline" href={buildWhatsAppUrl()} target="_blank" rel="noopener noreferrer">WhatsApp</a> or{" "}
+          <a className="text-accentink underline" href={`mailto:${profile.email}`}>{profile.email}</a>.
         </div>
       )}
       <button disabled={state === "pending"} className="w-full rounded-full bg-accent px-7 py-4 font-medium text-onaccent transition-opacity disabled:opacity-60 sm:w-auto">

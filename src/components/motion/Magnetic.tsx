@@ -1,9 +1,10 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import { useRef } from "react";
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 export default function Magnetic({ children, strength = 0.35 }: { children: React.ReactNode; strength?: number }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const ref = useRef<HTMLDivElement>(null);
   const x = useSpring(useMotionValue(0), { stiffness: 200, damping: 15 });
   const y = useSpring(useMotionValue(0), { stiffness: 200, damping: 15 });

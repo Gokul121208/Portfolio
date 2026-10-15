@@ -11,7 +11,7 @@ export default function Stats() {
           {profile.stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.08}>
               <div className="h-full bg-bg p-6 sm:p-8">
-                <dd className="font-display text-5xl font-bold tracking-tighter text-accent sm:text-6xl"><CountUp to={s.value} suffix={s.suffix} /></dd>
+                <dd className="font-display text-5xl font-bold tracking-tighter text-accentink sm:text-6xl"><CountUp to={s.value} suffix={s.suffix} /></dd>
                 <dt className="mt-2 font-mono text-xs uppercase tracking-widest text-muted">{s.label}</dt>
               </div>
             </Reveal>

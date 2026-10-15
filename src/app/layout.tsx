@@ -7,6 +7,7 @@ import Cursor from "@/components/motion/Cursor";
 import Loader from "@/components/motion/Loader";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import BackToTop from "@/components/BackToTop";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", display: "swap" });
@@ -14,6 +15,7 @@ const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3100"),
   title: { default: "Gokul M | Digital Marketer, Trader & Creator", template: "%s | Gokul M" },
   description:
     "Gokul M is a digital marketer, Forex & Futures trader and content creator, and founder of The Moments Lab AI Marketing Agency.",
@@ -32,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Header />
             <main className="min-h-screen">{children}</main>
             <Footer />
+            <BackToTop />
             <WhatsAppWidget />
           </SmoothScroll>
         </ThemeProvider>

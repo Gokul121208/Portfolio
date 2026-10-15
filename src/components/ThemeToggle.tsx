@@ -23,7 +23,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label="Switch between Night and Day session"
-      className="relative grid h-10 w-10 place-items-center rounded-full border border-line text-fg transition-colors hover:border-accent hover:text-accent"
+      className="relative grid h-10 w-10 place-items-center rounded-full border border-line text-fg transition-colors hover:border-accent hover:text-accentink"
     >
       {/* moon: shown in night */}
       <svg className="day:hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>

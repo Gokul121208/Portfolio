@@ -1,12 +1,13 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import { useRef } from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { makeCandles } from "@/lib/candles";
 
 const candles = makeCandles(36, 11);
 
 export default function CandleChart() {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15%" });
   const W = 720, H = 320, step = W / candles.length;

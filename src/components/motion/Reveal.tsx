@@ -1,10 +1,11 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
+import { useReduced } from "@/components/motion/useReduced";
+import { motion } from "motion/react";
 
 export default function Reveal({
   children, delay = 0, y = 32, className,
 }: { children: React.ReactNode; delay?: number; y?: number; className?: string }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   if (reduce) return <div className={className}>{children}</div>;
   return (
     <motion.div

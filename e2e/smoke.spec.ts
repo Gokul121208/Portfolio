@@ -57,9 +57,35 @@ test("contact form falls back to WhatsApp/email when email is not configured", a
   await expect(page.getByText(/Couldn't send the form/)).toBeVisible();
 });
 
-test("reduced motion: hero headline visible and no canvas mounted", async ({ page }) => {
+test("reduced motion: hero headline visible, no canvas, no hydration/console errors", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   await expect(page.locator("h1").first()).toBeVisible();
   await expect(page.locator("canvas")).toHaveCount(0);
+  await page.waitForTimeout(800);
+  expect(errors).toEqual([]);
+});
+
+test("no WebGL: hero still renders and the page does not crash", async ({ page }) => {
+  await page.addInitScript(() => {
+    HTMLCanvasElement.prototype.getContext = () => null;
+  });
+  await page.goto("/");
+  await expect(page.locator("h1").first()).toBeVisible();
+  await expect(page.locator("canvas")).toHaveCount(0);
+});
+
+test("back to top: hidden at top, appears after scrolling, returns to top", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/about");
+  const btn = page.getByRole("button", { name: "Back to top" });
+  await expect(btn).toBeHidden();
+  await page.evaluate(() => window.scrollTo(0, 1500));
+  await expect(btn).toBeVisible();
+  await btn.click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(5);
+  await expect(btn).toBeHidden();
 });

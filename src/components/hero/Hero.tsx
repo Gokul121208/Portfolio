@@ -1,11 +1,13 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { useReducedMotion } from "motion/react";
+
 import SplitText from "@/components/motion/SplitText";
 import Magnetic from "@/components/motion/Magnetic";
 import Reveal from "@/components/motion/Reveal";
+import SceneBoundary from "./SceneBoundary";
 import IdentityCycler from "./IdentityCycler";
 import Ticker from "./Ticker";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -16,14 +18,16 @@ const MarketScene = dynamic(() => import("./MarketScene"), { ssr: false });
 function hasWebGL() {
   try {
     const c = document.createElement("canvas");
-    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+    const gl = (c.getContext("webgl2") || c.getContext("webgl")) as WebGLRenderingContext | null;
+    gl?.getExtension("WEBGL_lose_context")?.loseContext(); // release the probe context; browsers cap live contexts
+    return !!gl;
   } catch {
     return false;
   }
 }
 
 export default function Hero() {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const [gl, setGl] = useState(false);
   useEffect(() => setGl(!reduce && hasWebGL()), [reduce]);
 
@@ -38,7 +42,11 @@ export default function Hero() {
             "radial-gradient(60% 50% at 70% 60%, color-mix(in oklab, var(--accent-2) 35%, transparent), transparent 70%), radial-gradient(40% 40% at 20% 80%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 70%)",
         }}
       />
-      {gl && <MarketScene />}
+      {gl && (
+        <SceneBoundary>
+          <MarketScene />
+        </SceneBoundary>
+      )}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-0 h-48 bg-gradient-to-t from-bg to-transparent" />
 
       <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-5 pb-16 pt-24 sm:px-8">

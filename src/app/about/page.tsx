@@ -24,7 +24,7 @@ export default function About() {
           <ul className="flex flex-wrap gap-3">
             {profile.skills.map((s, i) => (
               <Reveal key={s} delay={i * 0.04}>
-                <li className="rounded-full border border-line bg-bg2 px-4 py-2 font-mono text-xs uppercase tracking-wider transition-colors hover:border-accent hover:text-accent">{s}</li>
+                <li className="rounded-full border border-line bg-bg2 px-4 py-2 font-mono text-xs uppercase tracking-wider transition-colors hover:border-accent hover:text-accentink">{s}</li>
               </Reveal>
             ))}
           </ul>
@@ -48,7 +48,7 @@ export default function About() {
       <Container className="pb-8">
         <Reveal>
           <div className="rounded-3xl border border-line bg-bg2 p-8 sm:p-12">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">Founder</p>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accentink">Founder</p>
             <p className="mt-4 max-w-3xl font-display text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
               I founded {profile.agency}, bringing AI automation into everyday marketing.
             </p>

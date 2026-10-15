@@ -1,10 +1,11 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { profile } from "@/content/profile";
 
 export default function IdentityCycler() {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const [i, setI] = useState(0);
   useEffect(() => {
     if (reduce) return;
@@ -23,7 +24,7 @@ export default function IdentityCycler() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="text-accent"
+            className="text-accentink"
           >
             {profile.identities[i]}
           </motion.span>

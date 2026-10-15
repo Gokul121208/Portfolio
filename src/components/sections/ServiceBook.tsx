@@ -20,10 +20,10 @@ export default function ServiceBook() {
               className="flex w-full items-center justify-between gap-4 py-6 text-left"
             >
               <span className="flex items-baseline gap-5 sm:gap-8">
-                <span className={`font-mono text-xs ${isOpen ? "text-accent" : "text-muted"}`}>{s.tag}</span>
-                <span className={`font-display text-2xl font-semibold tracking-tight transition-colors sm:text-5xl ${isOpen ? "text-accent" : ""}`}>{s.title}</span>
+                <span className={`font-mono text-xs ${isOpen ? "text-accentink" : "text-muted"}`}>{s.tag}</span>
+                <span className={`font-display text-2xl font-semibold tracking-tight transition-colors sm:text-5xl ${isOpen ? "text-accentink" : ""}`}>{s.title}</span>
               </span>
-              <span className={`text-2xl transition-transform ${isOpen ? "rotate-45 text-accent" : ""}`}>+</span>
+              <span className={`text-2xl transition-transform ${isOpen ? "rotate-45 text-accentink" : ""}`}>+</span>
             </button>
             <AnimatePresence initial={false}>
               {isOpen && (

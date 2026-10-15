@@ -1,9 +1,10 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 export default function Cursor() {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const [enabled, setEnabled] = useState(false);
   const [big, setBig] = useState(false);
   const x = useMotionValue(-100);

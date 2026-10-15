@@ -1,11 +1,12 @@
 "use client";
+import { useReduced } from "@/components/motion/useReduced";
 import { useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
+
 
 const GLYPHS = "▲▼◆01$#%/\\+*";
 
 export default function Scramble({ text, className }: { text: string; className?: string }) {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const [out, setOut] = useState(text);
   const timer = useRef<number | null>(null);
 

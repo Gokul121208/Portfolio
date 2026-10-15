@@ -42,7 +42,7 @@ export default function WhatsAppWidget() {
                 </li>
               ))}
               <li>
-                <a href={buildWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="block rounded-xl px-3 py-2 text-center text-sm text-muted hover:text-accent">
+                <a href={buildWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="block rounded-xl px-3 py-2 text-center text-sm text-muted hover:text-accentink">
                   Just say hi →
                 </a>
               </li>

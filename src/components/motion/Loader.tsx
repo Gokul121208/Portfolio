@@ -1,15 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 export default function Loader() {
-  const reduce = useReducedMotion();
   const [show, setShow] = useState(false);
   const [n, setN] = useState(0);
 
   useEffect(() => {
     let seen = false;
     try { seen = sessionStorage.getItem("loaded") === "1"; } catch {}
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; // read directly: the hook flips after first render
     if (seen || reduce) return;
     setShow(true);
     const start = performance.now();
@@ -25,7 +25,7 @@ export default function Loader() {
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [reduce]);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -39,7 +39,7 @@ export default function Loader() {
           <div className="font-mono text-xs uppercase tracking-[0.3em] text-muted">Market opening · IST</div>
           <div className="flex items-end justify-between">
             <div className="font-display text-[22vw] font-bold leading-none tracking-tighter text-fg sm:text-[14vw]">{String(n).padStart(2, "0")}</div>
-            <div className="mb-4 font-mono text-sm text-accent">GOKUL M ▲</div>
+            <div className="mb-4 font-mono text-sm text-accentink">GOKUL M ▲</div>
           </div>
           <div className="absolute bottom-0 left-0 h-1 bg-accent" style={{ width: `${n}%` }} />
         </motion.div>

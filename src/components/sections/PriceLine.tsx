@@ -1,8 +1,9 @@
 "use client";
-import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
+import { useReduced } from "@/components/motion/useReduced";
+import { motion, useScroll, useSpring } from "motion/react";
 
 export default function PriceLine() {
-  const reduce = useReducedMotion();
+  const reduce = useReduced();
   const { scrollYProgress } = useScroll();
   const len = useSpring(scrollYProgress, { stiffness: 90, damping: 24 });
   if (reduce) return null;

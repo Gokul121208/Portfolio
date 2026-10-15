@@ -18,12 +18,12 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
           <li key={it.title} className="relative">
             <span className="absolute -left-[1.95rem] top-2 h-3 w-3 rounded-full border-2 border-accent bg-bg sm:-left-[2.95rem]" />
             <Reveal>
-              <p className="font-mono text-xs uppercase tracking-widest text-accent">{it.meta}</p>
+              <p className="font-mono text-xs uppercase tracking-widest text-accentink">{it.meta}</p>
               <h3 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-4xl">{it.title}</h3>
               <p className="text-muted">{it.sub}</p>
               {it.points && (
                 <ul className="mt-4 space-y-2 text-sm text-muted">
-                  {it.points.map((p) => <li key={p} className="flex gap-3"><span className="text-accent">▲</span>{p}</li>)}
+                  {it.points.map((p) => <li key={p} className="flex gap-3"><span className="text-accentink">▲</span>{p}</li>)}
                 </ul>
               )}
             </Reveal>

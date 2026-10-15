@@ -17,7 +17,7 @@ export default function Ticker() {
           <span key={i} className="flex items-center gap-3 whitespace-nowrap">
             <span className="text-muted">{it.k}</span>
             <span className="text-fg">{it.v}</span>
-            <span className={it.up ? "text-accent" : "text-accent3"}>{it.up ? "▲" : "▼"}</span>
+            <span className={it.up ? "text-accentink" : "text-accent3"}>{it.up ? "▲" : "▼"}</span>
           </span>
         ))}
       </div>
