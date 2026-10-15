@@ -1,5 +1,6 @@
 import type { Project } from "./types";
 
+// Completed projects first; ongoing work goes last.
 export const projects: Project[] = [
   {
     slug: "red-sea-boating",
@@ -18,6 +19,23 @@ export const projects: Project[] = [
     accent: "accent2",
   },
   {
+    slug: "sengal-boutique-hotel",
+    name: "Sengal Boutique Hotel",
+    tagline: "Giving a boutique stay a voice online",
+    summary: "Social media management that presents the hotel's character and keeps guests engaged between stays.",
+    services: ["Social Media Management"],
+    accent: "accent",
+  },
+  {
+    slug: "nr-congress-election-campaign",
+    name: "NR Congress Election Campaign",
+    tagline: "One part of a larger election campaign",
+    summary:
+      "Worked with NR Congress on one part of their election campaign. This was a contribution to the campaign, not the full campaign.",
+    services: ["Election Campaign Support"],
+    accent: "accent2",
+  },
+  {
     slug: "pondy-gyp-sea-boating",
     name: "Pondy Gyp Sea Boating",
     tagline: "Ongoing: ads and video driving daily enquiries",
@@ -25,14 +43,6 @@ export const projects: Project[] = [
     services: ["Video Production", "Meta Ads", "Lead Generation"],
     ongoing: true,
     accent: "accent3",
-  },
-  {
-    slug: "sengal-boutique-hotel",
-    name: "Sengal Boutique Hotel",
-    tagline: "Giving a boutique stay a voice online",
-    summary: "Social media management that presents the hotel's character and keeps guests engaged between stays.",
-    services: ["Social Media Management"],
-    accent: "accent",
   },
 ];
 

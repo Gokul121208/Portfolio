@@ -93,7 +93,7 @@ test("back to top: hidden at top, appears after scrolling, returns to top", asyn
 test("home: marketing bars fill in on scroll and website development shows 98%", async ({ page }) => {
   await page.addInitScript(() => sessionStorage.setItem("loaded", "1"));
   await page.goto("/");
-  await page.getByText("My marketing").scrollIntoViewIfNeeded();
+  await page.getByText("My marketing", { exact: true }).scrollIntoViewIfNeeded();
   const fill = page.locator('[role="presentation"] > div').first();
   await expect.poll(async () => (await fill.boundingBox())?.width ?? 0, { timeout: 5000 }).toBeGreaterThan(100);
   await expect(page.getByText("98%")).toBeVisible();
@@ -110,6 +110,11 @@ test("home: identity line is pinned, slides sideways, and letters snap into plac
   const chars = id.locator("[data-char]");
   const opacity = (which: "first" | "last") => chars[which]().evaluate((el) => Number(getComputedStyle(el).opacity));
   const left = () => chars.first().evaluate((el) => el.getBoundingClientRect().left);
+  const lineMidY = async () => {
+    const b = await id.locator("xpath=..").boundingBox(); // the sliding line container
+    return b!.y + b!.height / 2;
+  };
+  const vh = page.viewportSize()!.height;
   // scroll to a fraction (0..1) of the pinned section's travel
   const goTo = (f: number) =>
     id.evaluate((el, f) => {
@@ -120,6 +125,7 @@ test("home: identity line is pinned, slides sideways, and letters snap into plac
 
   await goTo(0);
   await expect.poll(() => opacity("last")).toBeLessThan(0.2); // last letter still off to the right
+  await expect.poll(lineMidY).toBeGreaterThan(vh / 2 + 100); // enters low on the screen
   await goTo(0.3);
   await page.waitForTimeout(300);
   const x1 = await left();
@@ -130,9 +136,59 @@ test("home: identity line is pinned, slides sideways, and letters snap into plac
   expect(await opacity("first")).toBeGreaterThan(0.95); // letters that have arrived are settled
   expect(await opacity("last")).toBeLessThan(0.5); // letters still to come are scattered/hidden
 
-  await goTo(1);
+  await goTo(0.5);
+  await page.waitForTimeout(300);
+  await expect.poll(async () => Math.abs((await lineMidY()) - vh / 2)).toBeLessThan(60); // passes through the middle
+  await goTo(0.9);
+  await page.waitForTimeout(300);
+  await expect.poll(lineMidY).toBeLessThan(vh / 2 - 100); // and keeps rising toward the top
+
+  // near the end the last letters have arrived and are settled, still on screen
+  await goTo(0.85);
   await expect.poll(() => opacity("last")).toBeGreaterThan(0.95);
-  const lastBox = await chars.last().boundingBox();
-  expect(lastBox!.x).toBeGreaterThan(0);
-  expect(lastBox!.x).toBeLessThan(1280); // the full sentence ends inside the viewport
+  const near = await chars.last().boundingBox();
+  expect(near!.x).toBeGreaterThan(0);
+
+  // the line never parks mid-screen: by the end of the pin it has fully exited to the left (no cut in the flow)
+  await goTo(1);
+  await page.waitForTimeout(300);
+  const end = await chars.last().boundingBox();
+  expect(end!.x + end!.width).toBeLessThanOrEqual(5);
+});
+
+test("home: trader and content-creator sections follow the roller, in order, with the Instagram link", async ({ page }) => {
+  await page.addInitScript(() => sessionStorage.setItem("loaded", "1"));
+  await page.goto("/");
+  const trader = page.getByRole("heading", { name: /Forex & Futures, played like a long game/ });
+  const creator = page.getByRole("heading", { name: /point of view/i });
+  await expect(trader).toHaveCount(1);
+  await expect(creator).toHaveCount(1);
+  const order = await page.evaluate(() => {
+    const pos = (el: Element | null) => (el ? el.getBoundingClientRect().top + window.scrollY : Infinity);
+    const h = (re: RegExp) => [...document.querySelectorAll("h2")].find((e) => re.test(e.textContent ?? "")) ?? null;
+    const identity = document.querySelector('h2[aria-label^="I\'m a"]');
+    return [pos(identity), pos(h(/long\sgame/i)), pos(h(/point\sof\sview/i)), pos(h(/Strategy\sthat/i))];
+  });
+  expect([...order].sort((a, b) => a - b)).toEqual(order); // identity < trader < creator < marketing
+  const ig = page.getByRole("link", { name: /@buildwith\.goku/i }).first();
+  await expect(ig).toHaveAttribute("href", /instagram\.com\/buildwith\.goku/);
+});
+
+test("experience page lists the founded company (2025 – Present) and all three jobs", async ({ page }) => {
+  await page.goto("/experience");
+  for (const name of ["The Moments Lab AI Marketing Agency", "Vima Insurance Brokers Pvt Ltd", "Deivamey Digital Marketing Agency", "Blackwins Tech Solutions"]) {
+    await expect(page.getByText(name, { exact: true })).toBeVisible();
+  }
+  await expect(page.getByText("2025 – Present")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Content Specialist & Performance Marketer" })).toBeVisible();
+});
+
+test("projects: all five projects are listed and the election campaign case page works", async ({ page }) => {
+  await page.goto("/projects");
+  for (const n of ["Red Sea Boating", "Pondy SRM Cruises", "Pondy Gyp Sea Boating", "Sengal Boutique Hotel", "NR Congress Election Campaign"]) {
+    await expect(page.getByRole("heading", { name: n })).toBeVisible();
+  }
+  const res = await page.goto("/projects/nr-congress-election-campaign");
+  expect(res?.status()).toBe(200);
+  await expect(page.getByRole("heading", { level: 1, name: "NR Congress Election Campaign" })).toBeVisible();
 });

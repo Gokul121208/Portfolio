@@ -29,9 +29,10 @@ export const profile = {
     { label: "Leads generated", value: 1500, suffix: "+", placeholder: true as const },
     { label: "Months in market", value: 24, suffix: "", placeholder: true as const },
   ],
-  // PLACEHOLDER links: replace with real profiles.
+  instagramHandle: "@buildwith.goku",
+  // LinkedIn is a PLACEHOLDER link: replace with the real profile.
   socials: [
-    { label: "Instagram", href: "https://instagram.com/" },
+    { label: "Instagram", href: "https://www.instagram.com/buildwith.goku/" },
     { label: "LinkedIn", href: "https://linkedin.com/" },
   ],
 };

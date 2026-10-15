@@ -1,6 +1,8 @@
 import Hero from "@/components/hero/Hero";
 import IdentityScroll from "@/components/sections/IdentityScroll";
 import ServiceMarquee from "@/components/sections/ServiceMarquee";
+import TraderSection from "@/components/sections/TraderSection";
+import CreatorSection from "@/components/sections/CreatorSection";
 import MarketingBars from "@/components/sections/MarketingBars";
 import FeaturedProjects from "@/components/sections/FeaturedProjects";
 import TestimonialsTeaser from "@/components/sections/TestimonialsTeaser";
@@ -14,6 +16,8 @@ export default function Home() {
       <Hero />
       <IdentityScroll />
       <ServiceMarquee />
+      <TraderSection />
+      <CreatorSection />
       <MarketingBars />
       <FeaturedProjects />
       <TestimonialsTeaser />

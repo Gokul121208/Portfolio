@@ -17,7 +17,7 @@ Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion (UI mo
 | `/` | Hero (WebGL ribbons/candles + giant "GOKUL M"), live-style ticker, identity cycler, stats count-up, services teaser, featured projects, trading teaser, testimonials, CTA |
 | `/about` | Story, education timeline (B.Tech IT; MBA Marketing, pursuing), skills, trading journey, founder note |
 | `/services` | 7 services as order-book style interactive rows; process section |
-| `/experience` | Timeline: Black Lens Tech Solution (Digital Marketing Intern, 6 mo); VIMA Insurance Brokers (Visual Content Specialist, ~6 mo) |
+| `/experience` | Timeline: The Moments Lab AI Marketing Agency (Founder, 2025 – Present); Vima Insurance Brokers Pvt Ltd (Visual Content Specialist & Executive); Deivamey Digital Marketing Agency (Content Specialist & Performance Marketer); Blackwins Tech Solutions (Digital Marketing Intern, 6 mo) |
 | `/projects`, `/projects/[slug]` | Red Sea Boating, Pondy SRM Cruises, Pondy Gyp Sea Boating (ongoing), Sengal Boutique Hotel. Horizontal-scroll gallery; case pages with video slot |
 | `/testimonials` | Carousel of client feedback (placeholder content) |
 | `/contact` | Form, email gokulamurugan40@gmail.com, phone +91 9159348778, social links |

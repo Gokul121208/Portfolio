@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import Reveal from "@/components/motion/Reveal";
 
-export type TimelineItem = { title: string; sub: string; meta: string; points?: string[] };
+export type TimelineItem = { title: string; sub: string; meta?: string; points?: string[] };
 
 export default function Timeline({ items }: { items: TimelineItem[] }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -18,7 +18,7 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
           <li key={it.title} className="relative">
             <span className="absolute -left-[1.95rem] top-2 h-3 w-3 rounded-full border-2 border-accent bg-bg sm:-left-[2.95rem]" />
             <Reveal>
-              <p className="font-mono text-xs uppercase tracking-widest text-accentink">{it.meta}</p>
+              {it.meta && <p className="font-mono text-xs uppercase tracking-widest text-accentink">{it.meta}</p>}
               <h3 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-4xl">{it.title}</h3>
               <p className="text-muted">{it.sub}</p>
               {it.points && (

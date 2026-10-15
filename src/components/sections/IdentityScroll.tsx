@@ -15,6 +15,7 @@ const rand = (n: number, salt: number) => {
 };
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 const easeOut = (t: number) => 1 - (1 - t) ** 3;
+const easeIn = (t: number) => t * t;
 
 // Letters start scattered (random height + tilt, invisible) and snap into place as the sliding line carries them in.
 function Char({ ch, index, x, offset, vw }: { ch: string; index: number; x: MotionValue<number>; offset: number; vw: number }) {
@@ -57,9 +58,10 @@ export default function IdentityScroll() {
   const line = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
   const x = useMotionValue(0);
+  const y = useMotionValue(0);
   const starRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const [m, setM] = useState({ vw: 1280, lineW: 4000, offsets: [] as number[] });
-  const geo = useRef({ start: 0, end: 0 });
+  const [m, setM] = useState({ vw: 1280, vh: 800, lineW: 4000, offsets: [] as number[] });
+  const geo = useRef({ start: 0, end: 0, rise: 0 });
 
   // measure the line and every letter (re-measured on resize and once fonts load)
   useLayoutEffect(() => {
@@ -68,8 +70,9 @@ export default function IdentityScroll() {
       const el = line.current;
       if (!el) return;
       const vw = window.innerWidth;
+      const vh = window.innerHeight;
       const offsets = [...el.querySelectorAll<HTMLElement>("[data-char]")].map((c) => c.offsetLeft);
-      setM({ vw, lineW: el.scrollWidth, offsets });
+      setM({ vw, vh, lineW: el.scrollWidth, offsets });
     };
     measure();
     window.addEventListener("resize", measure);
@@ -77,14 +80,19 @@ export default function IdentityScroll() {
     return () => window.removeEventListener("resize", measure);
   }, [reduce]);
 
-  // the line enters from the right edge and finishes with its last word resting in the viewport
-  // (it arrives at 90% of the scroll and holds for the last 10% so the final letters visibly settle)
-  const place = (p: number) => geo.current.start + (geo.current.end - geo.current.start) * clamp(p / 0.9);
+  // The line enters low on the screen at the right edge, rises to the middle while it is being read,
+  // then keeps rising and drifting left until it has fully left through the top: the pinned section
+  // hands off to the next one with no parked text and no break in the flow.
+  const place = (p: number) => {
+    const { start, end, rise } = geo.current;
+    x.set(start + (end - start) * clamp(p));
+    y.set(p < 0.5 ? (1 - easeOut(clamp(p / 0.5))) * rise : -easeIn(clamp((p - 0.5) / 0.5)) * rise);
+  };
   useEffect(() => {
-    geo.current = { start: m.vw * 0.96, end: -(m.lineW - m.vw * 0.62) };
-    x.set(place(scrollYProgress.get()));
-  }, [m, x, scrollYProgress]);
-  useMotionValueEvent(scrollYProgress, "change", (p) => x.set(place(p)));
+    geo.current = { start: m.vw * 0.96, end: -(m.lineW + 40), rise: m.vh * 0.42 };
+    place(scrollYProgress.get());
+  }, [m, scrollYProgress]); // eslint-disable-line react-hooks/exhaustive-deps
+  useMotionValueEvent(scrollYProgress, "change", place);
 
   if (reduce) {
     return (
@@ -101,7 +109,7 @@ export default function IdentityScroll() {
   return (
     <section ref={section} className="relative h-[450vh]">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div ref={line} style={{ x }} className="flex w-max items-center whitespace-nowrap font-display text-[clamp(3.2rem,11vw,11rem)] font-bold uppercase leading-none tracking-tighter">
+        <motion.div ref={line} style={{ x, y }} className="flex w-max items-center whitespace-nowrap font-display text-[clamp(3.2rem,11vw,11rem)] font-bold uppercase leading-none tracking-tighter">
           <Star rotate={starRotate} />
           <h2 aria-label={sentence} className="m-0 inline-flex font-[inherit] text-[length:inherit] font-bold leading-none">
             {sentence.split("").map((ch, idx) => (

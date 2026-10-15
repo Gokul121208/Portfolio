@@ -4,7 +4,7 @@ import Timeline from "@/components/sections/Timeline";
 import CTA from "@/components/sections/CTA";
 import { experience } from "@/content/experience";
 
-export const metadata: Metadata = { title: "Experience", description: "Roles at Black Lens Tech Solution and VIMA Insurance Brokers." };
+export const metadata: Metadata = { title: "Experience", description: "Founder of The Moments Lab AI Marketing Agency, plus roles at Vima Insurance Brokers, Deivamey Digital Marketing Agency and Blackwins Tech Solutions." };
 
 export default function Experience() {
   return (
