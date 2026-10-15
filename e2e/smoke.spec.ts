@@ -195,3 +195,38 @@ test("projects: all five projects are listed and the election campaign case page
   expect(res?.status()).toBe(200);
   await expect(page.getByRole("heading", { level: 1, name: "NR Congress Election Campaign" })).toBeVisible();
 });
+
+test("instagram card: full-width button on phones, compact on desktop, no overflow", async ({ page }) => {
+  await page.addInitScript(() => sessionStorage.setItem("loaded", "1"));
+  const link = page.getByRole("link", { name: /@buildwith\.goku on Instagram/ });
+  const card = link.locator("xpath=ancestor::div[contains(@class,'rounded-3xl')][1]");
+
+  await page.setViewportSize({ width: 360, height: 780 });
+  await page.goto("/");
+  await link.scrollIntoViewIfNeeded();
+  const c = (await card.boundingBox())!;
+  const l = (await link.boundingBox())!;
+  expect(l.width).toBeGreaterThan(c.width - 40); // spans the card's inner width
+  expect(l.x).toBeGreaterThanOrEqual(c.x);
+  expect(l.x + l.width).toBeLessThanOrEqual(c.x + c.width);
+  expect(l.height).toBeGreaterThanOrEqual(44); // comfortable touch target
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.reload();
+  await link.scrollIntoViewIfNeeded();
+  expect((await link.boundingBox())!.width).toBeLessThan(400); // not stretched on desktop
+});
+
+test("dark is the default: a stale saved Day choice from an older build is ignored, a new choice sticks", async ({ browser }) => {
+  const ctx = await browser.newContext({ colorScheme: "light" }); // even a light system gets Night first
+  await ctx.addInitScript(() => localStorage.setItem("theme", "day")); // key used by earlier builds
+  const page = await ctx.newPage();
+  await page.goto("/about");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "night");
+  await page.getByRole("button", { name: /Night and Day/ }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "day");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "day"); // new choice persists
+  await ctx.close();
+});

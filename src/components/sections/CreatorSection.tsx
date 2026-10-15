@@ -27,17 +27,20 @@ export default function CreatorSection() {
             </Reveal>
 
             <Reveal delay={0.3}>
-              <div className="mt-8 flex flex-wrap items-center gap-4 rounded-3xl border border-line bg-bg2 p-4 sm:p-5">
-                <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full p-[3px]" style={{ background: "conic-gradient(from 200deg, var(--accent), var(--accent-2), var(--accent-3), var(--accent))" }}>
-                  <span className="grid h-full w-full place-items-center rounded-full bg-bg font-display text-2xl font-bold">G</span>
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-display text-xl font-bold tracking-tight">{profile.instagramHandle}</p>
-                  <p className="text-sm text-muted">Instagram · by Gokul M</p>
+              <div className="mt-8 flex flex-col gap-4 rounded-3xl border border-line bg-bg2 p-4 sm:flex-row sm:items-center sm:p-5">
+                <div className="flex min-w-0 flex-1 items-center gap-4">
+                  <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full p-[3px] sm:h-16 sm:w-16" style={{ background: "conic-gradient(from 200deg, var(--accent), var(--accent-2), var(--accent-3), var(--accent))" }}>
+                    <span className="grid h-full w-full place-items-center rounded-full bg-bg font-display text-xl font-bold sm:text-2xl">G</span>
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate font-display text-lg font-bold tracking-tight sm:text-xl">{profile.instagramHandle}</p>
+                    <p className="text-sm text-muted">Instagram · by Gokul M</p>
+                  </div>
                 </div>
-                <Magnetic>
-                  <a href={instagram} target="_blank" rel="noopener noreferrer" aria-label={`${profile.instagramHandle} on Instagram`} className="inline-block rounded-full bg-accent px-5 py-3 text-sm font-medium text-onaccent">
-                    Follow {profile.instagramHandle} ↗
+                <Magnetic className="block w-full sm:inline-block sm:w-auto">
+                  <a href={instagram} target="_blank" rel="noopener noreferrer" aria-label={`${profile.instagramHandle} on Instagram`} className="block rounded-full bg-accent px-5 py-3.5 text-center text-sm font-medium text-onaccent sm:inline-block sm:py-3">
+                    <span className="sm:hidden" aria-hidden>Follow on Instagram ↗</span>
+                    <span className="hidden sm:inline" aria-hidden>Follow {profile.instagramHandle} ↗</span>
                   </a>
                 </Magnetic>
               </div>
