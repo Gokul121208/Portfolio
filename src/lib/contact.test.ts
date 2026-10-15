@@ -22,3 +22,28 @@ describe("rateLimit", () => {
     expect(rateLimit("ip-a", t + 61_000)).toBe(true);
   });
 });
+
+import { clientKey, rateLimitSize } from "./rateLimit";
+
+describe("rateLimit hardening", () => {
+  test("map stays bounded and prunes expired keys", () => {
+    const t = 5_000_000;
+    for (let i = 0; i < 20_000; i++) rateLimit(`spoof-${i}`, t);
+    expect(rateLimitSize()).toBeLessThanOrEqual(5000);
+    rateLimit("later", t + 120_000);
+    expect(rateLimitSize()).toBeLessThanOrEqual(5000);
+  });
+  test("global cap blocks distinct keys flood", () => {
+    const t = 9_000_000;
+    let allowed = 0;
+    for (let i = 0; i < 100; i++) if (rateLimit(`g-${i}`, t)) allowed++;
+    expect(allowed).toBeLessThanOrEqual(30);
+  });
+  test("clientKey prefers platform headers over spoofable xff", () => {
+    const h = (o: Record<string, string>) => new Headers(o);
+    expect(clientKey(h({ "x-vercel-forwarded-for": "1.1.1.1", "x-forwarded-for": "9.9.9.9" }))).toBe("1.1.1.1");
+    expect(clientKey(h({ "x-real-ip": "2.2.2.2", "x-forwarded-for": "9.9.9.9" }))).toBe("2.2.2.2");
+    expect(clientKey(h({ "x-forwarded-for": "9.9.9.9, 3.3.3.3" }))).toBe("3.3.3.3");
+    expect(clientKey(h({}))).toBe("unknown");
+  });
+});

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { contactSchema } from "@/lib/contact";
-import { rateLimit } from "@/lib/rateLimit";
+import { clientKey, rateLimit } from "@/lib/rateLimit";
 import { profile } from "@/content/profile";
 
 export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const ip = clientKey(req.headers);
   if (!rateLimit(ip)) {
     return NextResponse.json({ error: "Too many messages, please try again in a minute." }, { status: 429 });
   }
