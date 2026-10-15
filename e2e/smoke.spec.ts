@@ -156,20 +156,23 @@ test("home: identity line is pinned, slides sideways, and letters snap into plac
   expect(end!.x + end!.width).toBeLessThanOrEqual(5);
 });
 
-test("home: trader and content-creator sections follow the roller, in order, with the Instagram link", async ({ page }) => {
+test("home: marketing, trader, creator and founder sections follow the roller in that order, with the Instagram link", async ({ page }) => {
   await page.addInitScript(() => sessionStorage.setItem("loaded", "1"));
   await page.goto("/");
   const trader = page.getByRole("heading", { name: /Forex & Futures, played like a long game/ });
   const creator = page.getByRole("heading", { name: /point of view/i });
   await expect(trader).toHaveCount(1);
   await expect(creator).toHaveCount(1);
+  const founder = page.getByRole("heading", { name: /I built my own agency/ });
+  await expect(founder).toHaveCount(1);
+  await expect(founder.locator("xpath=ancestor::section").getByRole("link", { name: /Moments Lab|Experience|journey/i }).first()).toHaveAttribute("href", "/experience");
   const order = await page.evaluate(() => {
     const pos = (el: Element | null) => (el ? el.getBoundingClientRect().top + window.scrollY : Infinity);
     const h = (re: RegExp) => [...document.querySelectorAll("h2")].find((e) => re.test(e.textContent ?? "")) ?? null;
     const identity = document.querySelector('h2[aria-label^="I\'m a"]');
-    return [pos(identity), pos(h(/long\sgame/i)), pos(h(/point\sof\sview/i)), pos(h(/Strategy\sthat/i))];
+    return [pos(identity), pos(h(/Strategy\sthat/i)), pos(h(/long\sgame/i)), pos(h(/point\sof\sview/i)), pos(h(/own\sagency/i))];
   });
-  expect([...order].sort((a, b) => a - b)).toEqual(order); // identity < trader < creator < marketing
+  expect([...order].sort((a, b) => a - b)).toEqual(order); // identity < marketing < trader < creator < founder
   const ig = page.getByRole("link", { name: /@buildwith\.goku/i }).first();
   await expect(ig).toHaveAttribute("href", /instagram\.com\/buildwith\.goku/);
 });
