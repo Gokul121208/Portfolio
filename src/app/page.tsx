@@ -1,7 +1,7 @@
 import Hero from "@/components/hero/Hero";
 import Stats from "@/components/sections/Stats";
 import ServiceMarquee from "@/components/sections/ServiceMarquee";
-import ServicesTeaser from "@/components/sections/ServicesTeaser";
+import MarketingBars from "@/components/sections/MarketingBars";
 import FeaturedProjects from "@/components/sections/FeaturedProjects";
 import TestimonialsTeaser from "@/components/sections/TestimonialsTeaser";
 import CTA from "@/components/sections/CTA";
@@ -14,7 +14,7 @@ export default function Home() {
       <Hero />
       <Stats />
       <ServiceMarquee />
-      <ServicesTeaser />
+      <MarketingBars />
       <FeaturedProjects />
       <TestimonialsTeaser />
       <CTA />

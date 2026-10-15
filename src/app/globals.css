@@ -99,3 +99,5 @@ body::before {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .marquee-track { animation: none; }
 }
+
+@keyframes shine { 0% { transform: translateX(0); } 100% { transform: translateX(450%); } }

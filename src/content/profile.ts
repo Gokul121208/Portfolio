@@ -13,6 +13,15 @@ export const profile = {
     "Performance Ads", "Short-form Video", "Copywriting", "Funnel Building",
     "Marketing Automation", "Web Development", "Brand Storytelling", "Market Analysis",
   ],
+  // Visual emphasis for the home-page bars (0-100), not measured results. Adjust to taste.
+  marketingFocus: [
+    { label: "Performance Ads", level: 90 },
+    { label: "Short-form Video & Content", level: 95 },
+    { label: "Lead Generation & Funnels", level: 88 },
+    { label: "Social Media Growth", level: 92 },
+    { label: "AI Marketing Automation", level: 80 },
+    { label: "Website Development", level: 98 },
+  ],
   // PLACEHOLDER numbers: replace with real figures.
   stats: [
     { label: "Brands grown", value: 4, suffix: "+", placeholder: true as const },

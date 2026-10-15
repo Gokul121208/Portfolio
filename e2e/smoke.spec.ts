@@ -89,3 +89,12 @@ test("back to top: hidden at top, appears after scrolling, returns to top", asyn
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(5);
   await expect(btn).toBeHidden();
 });
+
+test("home: marketing bars fill in on scroll and website development shows 98%", async ({ page }) => {
+  await page.addInitScript(() => sessionStorage.setItem("loaded", "1"));
+  await page.goto("/");
+  await page.getByText("My marketing").scrollIntoViewIfNeeded();
+  const fill = page.locator('[role="presentation"] > div').first();
+  await expect.poll(async () => (await fill.boundingBox())?.width ?? 0, { timeout: 5000 }).toBeGreaterThan(100);
+  await expect(page.getByText("98%")).toBeVisible();
+});
