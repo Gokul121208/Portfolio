@@ -98,3 +98,41 @@ test("home: marketing bars fill in on scroll and website development shows 98%",
   await expect.poll(async () => (await fill.boundingBox())?.width ?? 0, { timeout: 5000 }).toBeGreaterThan(100);
   await expect(page.getByText("98%")).toBeVisible();
 });
+
+test("home: identity line is pinned, slides sideways, and letters snap into place as they arrive", async ({ page }) => {
+  await page.addInitScript(() => sessionStorage.setItem("loaded", "1"));
+  await page.goto("/");
+  await expect(page.locator("section").first().getByText(/I.m a/)).toHaveCount(0);
+  await expect(page.getByText("Sample figures, updating soon")).toHaveCount(0);
+
+  const id = page.getByRole("heading", { name: /Digital Marketer.*Founder/ });
+  await expect(id).toHaveCount(1);
+  const chars = id.locator("[data-char]");
+  const opacity = (which: "first" | "last") => chars[which]().evaluate((el) => Number(getComputedStyle(el).opacity));
+  const left = () => chars.first().evaluate((el) => el.getBoundingClientRect().left);
+  // scroll to a fraction (0..1) of the pinned section's travel
+  const goTo = (f: number) =>
+    id.evaluate((el, f) => {
+      const sec = el.closest("section")!;
+      const top = window.scrollY + sec.getBoundingClientRect().top;
+      window.scrollTo(0, top + f * (sec.offsetHeight - window.innerHeight));
+    }, f);
+
+  await goTo(0);
+  await expect.poll(() => opacity("last")).toBeLessThan(0.2); // last letter still off to the right
+  await goTo(0.3);
+  await page.waitForTimeout(300);
+  const x1 = await left();
+  await goTo(0.6);
+  await page.waitForTimeout(300);
+  const x2 = await left();
+  expect(x2).toBeLessThan(x1 - 200); // the line travels left as you scroll
+  expect(await opacity("first")).toBeGreaterThan(0.95); // letters that have arrived are settled
+  expect(await opacity("last")).toBeLessThan(0.5); // letters still to come are scattered/hidden
+
+  await goTo(1);
+  await expect.poll(() => opacity("last")).toBeGreaterThan(0.95);
+  const lastBox = await chars.last().boundingBox();
+  expect(lastBox!.x).toBeGreaterThan(0);
+  expect(lastBox!.x).toBeLessThan(1280); // the full sentence ends inside the viewport
+});

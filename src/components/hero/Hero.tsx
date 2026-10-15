@@ -8,7 +8,6 @@ import SplitText from "@/components/motion/SplitText";
 import Magnetic from "@/components/motion/Magnetic";
 import Reveal from "@/components/motion/Reveal";
 import SceneBoundary from "./SceneBoundary";
-import IdentityCycler from "./IdentityCycler";
 import Ticker from "./Ticker";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { profile } from "@/content/profile";
@@ -64,15 +63,12 @@ export default function Hero() {
         </h1>
         <div className="mt-6 max-w-2xl space-y-5">
           <Reveal delay={0.7}>
-            <IdentityCycler />
-          </Reveal>
-          <Reveal delay={0.85}>
             <p className="text-base text-fg/70 [text-shadow:0_0_14px_var(--bg)] sm:text-lg">
               I read attention the way traders read markets: spotting the move, managing the risk, and turning it into
               growth. Founder of {profile.agency}.
             </p>
           </Reveal>
-          <Reveal delay={1}>
+          <Reveal delay={0.85}>
             <div className="flex flex-wrap gap-3">
               <Magnetic>
                 <Link href="/projects" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 font-medium text-onaccent">

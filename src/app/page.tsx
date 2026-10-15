@@ -1,5 +1,5 @@
 import Hero from "@/components/hero/Hero";
-import Stats from "@/components/sections/Stats";
+import IdentityScroll from "@/components/sections/IdentityScroll";
 import ServiceMarquee from "@/components/sections/ServiceMarquee";
 import MarketingBars from "@/components/sections/MarketingBars";
 import FeaturedProjects from "@/components/sections/FeaturedProjects";
@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <PriceLine />
       <Hero />
-      <Stats />
+      <IdentityScroll />
       <ServiceMarquee />
       <MarketingBars />
       <FeaturedProjects />
