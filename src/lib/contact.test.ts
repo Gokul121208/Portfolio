@@ -33,11 +33,14 @@ describe("rateLimit hardening", () => {
     rateLimit("later", t + 120_000);
     expect(rateLimitSize()).toBeLessThanOrEqual(5000);
   });
-  test("global cap blocks distinct keys flood", () => {
+  test("one client flooding cannot lock out other clients", () => {
     const t = 9_000_000;
-    let allowed = 0;
-    for (let i = 0; i < 100; i++) if (rateLimit(`g-${i}`, t)) allowed++;
-    expect(allowed).toBeLessThanOrEqual(30);
+    for (let i = 0; i < 100; i++) rateLimit("attacker", t);
+    expect(rateLimit("legit-visitor", t)).toBe(true);
+  });
+  test("many distinct clients are each allowed", () => {
+    const t = 9_500_000;
+    for (let i = 0; i < 100; i++) expect(rateLimit(`c-${i}`, t)).toBe(true);
   });
   test("clientKey prefers platform headers over spoofable xff", () => {
     const h = (o: Record<string, string>) => new Headers(o);

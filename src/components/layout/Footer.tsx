@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { profile } from "@/content/profile";
-import { nav } from "./Header";
+import { nav } from "@/content/nav";
 
 export default function Footer() {
   return (

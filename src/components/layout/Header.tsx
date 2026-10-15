@@ -5,15 +5,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import ThemeToggle from "@/components/ThemeToggle";
 import Scramble from "@/components/motion/Scramble";
-
-export const nav = [
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/experience", label: "Experience" },
-  { href: "/projects", label: "Projects" },
-  { href: "/testimonials", label: "Testimonials" },
-  { href: "/contact", label: "Contact" },
-];
+import { nav } from "@/content/nav";
 
 export default function Header() {
   const path = usePathname();

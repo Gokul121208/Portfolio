@@ -1,12 +1,11 @@
 // In-memory and per server instance: blunts spam on a single deployment.
-// Per-client limit plus a global cap, so rotating spoofed client keys cannot bypass it.
+// Per-client limit keyed by a platform-supplied client address (see clientKey).
+// No global cap: it would let one client lock everyone else out.
 const WINDOW_MS = 60_000;
 const MAX_PER_KEY = 5;
-const MAX_GLOBAL = 30;
 const MAX_KEYS = 5000;
 
 const hits = new Map<string, number[]>();
-let globalHits: number[] = [];
 
 function sweep(now: number) {
   for (const [k, v] of hits) {
@@ -20,9 +19,6 @@ function sweep(now: number) {
 }
 
 export function rateLimit(key: string, now: number = Date.now()): boolean {
-  globalHits = globalHits.filter((t) => now - t < WINDOW_MS);
-  if (globalHits.length >= MAX_GLOBAL) return false;
-
   const recent = (hits.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
   if (recent.length >= MAX_PER_KEY) {
     hits.set(key, recent);
@@ -32,7 +28,6 @@ export function rateLimit(key: string, now: number = Date.now()): boolean {
 
   recent.push(now);
   hits.set(key, recent);
-  globalHits.push(now);
   return true;
 }
 
