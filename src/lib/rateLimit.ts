@@ -1,6 +1,8 @@
 // In-memory and per server instance: blunts spam on a single deployment.
 // Per-client limit keyed by a platform-supplied client address (see clientKey).
 // No global cap: it would let one client lock everyone else out.
+// Known limit: off Vercel (no trusted proxy header) a client can rotate x-forwarded-for to evade this;
+// add Cloudflare Turnstile or a platform firewall rule if abuse appears.
 const WINDOW_MS = 60_000;
 const MAX_PER_KEY = 5;
 const MAX_KEYS = 5000;

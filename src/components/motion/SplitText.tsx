@@ -1,7 +1,7 @@
 "use client";
 import { motion, useReducedMotion } from "motion/react";
 
-type Props = { text: string; className?: string; delay?: number; as?: "h1" | "h2" | "h3" | "p" | "div" };
+type Props = { text: string; className?: string; delay?: number; as?: "h1" | "h2" | "h3" | "p" | "div" | "span" };
 
 export default function SplitText({ text, className, delay = 0, as: Tag = "div" }: Props) {
   const reduce = useReducedMotion();
