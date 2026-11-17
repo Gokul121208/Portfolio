@@ -11,7 +11,7 @@ export default function FeaturedProjects() {
         <SectionHead eyebrow="Selected work" title="Recent work." intro="A look at two of my freelance campaigns. The rest, with video, are on the projects page." />
         <div className="grid gap-6 md:grid-cols-2">
           {projects.slice(0, 2).map((p, i) => (
-            <Reveal key={p.slug} delay={(i % 2) * 0.1}>
+            <Reveal key={p.slug} delay={(i % 2) * 0.1} className="h-full">
               <ProjectCard project={p} index={i} />
             </Reveal>
           ))}

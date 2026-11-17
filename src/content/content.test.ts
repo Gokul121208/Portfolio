@@ -42,8 +42,8 @@ describe("content", () => {
     expect(byCompany["Deivamey Digital Marketing Agency"].title).toBe("Content Specialist & Performance Marketer");
     expect(byCompany["Blackwins Tech Solutions"].title).toBe("Digital Marketing Intern");
   });
-  test("placeholders are flagged", () => {
-    expect(testimonials.every((t) => t.placeholder)).toBe(true);
+  test("testimonials are the four client owners; stats stay flagged as placeholders", () => {
+    expect(testimonials.map((t) => t.name)).toEqual(["Madhan S", "Rajesh", "Thilaga", "Kanchan"]);
     expect(profile.stats.every((s) => s.placeholder)).toBe(true);
   });
 });

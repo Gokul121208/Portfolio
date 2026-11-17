@@ -7,11 +7,11 @@ export const accentVar: Record<Accent, string> = {
 };
 
 // Abstract animated "waves + horizon" poster, used until a real video is added.
-export default function ProjectVisual({ accent, label }: { accent: Accent; label?: string }) {
+export default function ProjectVisual({ accent, label, className = "aspect-[16/10]" }: { accent: Accent; label?: string; className?: string }) {
   const c = accentVar[accent];
   return (
     <div
-      className="relative aspect-[16/10] w-full overflow-hidden"
+      className={`relative w-full overflow-hidden ${className}`}
       style={{ background: `radial-gradient(80% 70% at 70% 20%, color-mix(in oklab, ${c} 55%, transparent), transparent 70%), var(--bg-2)` }}
     >
       <svg viewBox="0 0 400 250" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden>

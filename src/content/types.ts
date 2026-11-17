@@ -12,4 +12,4 @@ export type Project = {
 };
 export type Service = { id: string; title: string; blurb: string; tag: string };
 export type Role = { company: string; title: string; duration?: string; points: string[] };
-export type Testimonial = { name: string; role: string; quote: string; placeholder: true };
+export type Testimonial = { name: string; role: string; quote: string; project: string };

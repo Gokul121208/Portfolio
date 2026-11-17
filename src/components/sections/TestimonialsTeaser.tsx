@@ -8,13 +8,13 @@ export default function TestimonialsTeaser() {
     <section className="py-24 sm:py-32">
       <Container>
         <SectionHead eyebrow="Kind words" title="What clients say." />
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {testimonials.map((t, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <figure className="flex h-full flex-col justify-between rounded-3xl border border-line bg-bg2 p-6">
                 <blockquote className="text-lg leading-relaxed">&ldquo;{t.quote}&rdquo;</blockquote>
                 <figcaption className="mt-6 font-mono text-xs uppercase tracking-widest text-muted">
-                  {t.name} · {t.role} <span className="ml-2 text-accentink">Sample</span>
+                  {t.name} · {t.role}
                 </figcaption>
               </figure>
             </Reveal>

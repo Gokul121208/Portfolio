@@ -1,52 +1,55 @@
 "use client";
-import { useReduced } from "@/components/motion/useReduced";
 import Link from "next/link";
-import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import type { Project } from "@/content/types";
 import ProjectVisual, { accentVar } from "./ProjectVisual";
 
-export default function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const reduce = useReduced();
-  const ref = useRef<HTMLAnchorElement>(null);
-  const mx = useSpring(useMotionValue(0), { stiffness: 150, damping: 18 });
-  const my = useSpring(useMotionValue(0), { stiffness: 150, damping: 18 });
-  const rotateY = useTransform(mx, [-0.5, 0.5], [-8, 8]);
-  const rotateX = useTransform(my, [-0.5, 0.5], [8, -8]);
+const MAX_TAGS = 3;
 
-  const move = (e: React.PointerEvent) => {
-    if (reduce || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width - 0.5);
-    my.set((e.clientY - r.top) / r.height - 0.5);
+export default function ProjectCard({ project, index }: { project: Project; index: number }) {
+  // cursor-follow glow: written straight to CSS vars, no re-render
+  const glow = (e: React.PointerEvent<HTMLAnchorElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
+  const extra = project.services.length - MAX_TAGS;
 
   return (
-    <motion.div style={{ rotateX, rotateY, transformPerspective: 1000 }} onPointerMove={move} onPointerLeave={() => { mx.set(0); my.set(0); }}>
-      <Link
-        ref={ref}
-        href={`/projects/${project.slug}`}
-        data-cursor
-        className="group relative block overflow-hidden rounded-3xl border border-line bg-bg2 transition-colors hover:border-[color:var(--c)]"
-        style={{ ["--c" as string]: accentVar[project.accent] }}
-      >
-        <ProjectVisual accent={project.accent} />
-        <div className="p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="font-mono text-xs text-muted">0{index + 1}{project.ongoing && <span className="ml-3 rounded-full bg-accent px-2 py-0.5 text-[10px] uppercase text-onaccent">Ongoing</span>}</p>
-              <h3 className="mt-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">{project.name}</h3>
-            </div>
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-line transition-all group-hover:rotate-45 group-hover:border-[color:var(--c)] group-hover:text-[color:var(--c)]">↗</span>
+    <Link
+      href={`/projects/${project.slug}`}
+      data-cursor
+      onPointerMove={glow}
+      className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-bg2 transition-[border-color,transform] duration-300 hover:border-[color:var(--c)] motion-safe:hover:-translate-y-1"
+      style={{ ["--c" as string]: accentVar[project.accent] }}
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background: "radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--c) 16%, transparent), transparent 65%)" }}
+      />
+      <ProjectVisual accent={project.accent} label="" className="aspect-[16/8]" />
+      <div className="relative flex flex-1 flex-col p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 font-mono text-xs text-muted">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            {project.ongoing && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-line px-2 py-0.5 text-[10px] uppercase tracking-wider text-fg">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[color:var(--c)]" />
+                Ongoing
+              </span>
+            )}
           </div>
-          <p className="mt-3 text-sm text-muted">{project.tagline}</p>
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {project.services.slice(0, 4).map((s) => (
-              <li key={s} className="rounded-full border border-line px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted">{s}</li>
-            ))}
-          </ul>
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-sm transition-all duration-300 group-hover:border-[color:var(--c)] group-hover:bg-[color:var(--c)] group-hover:text-onaccent motion-safe:group-hover:rotate-45">↗</span>
         </div>
-      </Link>
-    </motion.div>
+        <h3 className="mt-4 font-display text-xl font-bold leading-tight tracking-tight sm:text-2xl">{project.name}</h3>
+        <p className="mt-2 line-clamp-2 text-sm text-muted">{project.tagline}</p>
+        <ul className="mt-auto flex flex-wrap gap-1.5 pt-5">
+          {project.services.slice(0, MAX_TAGS).map((s) => (
+            <li key={s} className="rounded-full bg-fg/5 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted">{s}</li>
+          ))}
+          {extra > 0 && <li className="rounded-full bg-fg/5 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted">+{extra}</li>}
+        </ul>
+      </div>
+    </Link>
   );
 }
