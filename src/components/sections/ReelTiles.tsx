@@ -53,7 +53,7 @@ export default function ReelTiles() {
         onClose={onClose}
         onClick={(e) => e.target === dialog.current && dialog.current?.close()}
         aria-label="Reel 01"
-        className="m-auto max-h-[100dvh] max-w-[100vw] overflow-visible bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm"
+        className="reel-dialog m-auto max-h-[100dvh] max-w-[100vw] overflow-visible bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm"
       >
         <div className="relative">
           <video ref={player} src={FULL_REEL} poster="/reels/build-with-goku-1.jpg" controls playsInline preload="none" className="block aspect-[9/16] h-[90dvh] max-w-[95vw] rounded-2xl bg-black object-contain" />
