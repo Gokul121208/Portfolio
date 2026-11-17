@@ -3,14 +3,9 @@ import Reveal from "@/components/motion/Reveal";
 import Magnetic from "@/components/motion/Magnetic";
 import { profile } from "@/content/profile";
 import { creatorSteps } from "@/content/pillars";
+import ReelTiles from "./ReelTiles";
 
 const instagram = profile.socials.find((s) => s.label === "Instagram")!.href;
-// abstract reel tiles: stand-ins until real thumbnails are added
-const tiles = [
-  { bg: "linear-gradient(160deg, var(--accent-2), transparent 70%)", cls: "animate-[floaty_7s_ease-in-out_infinite]" },
-  { bg: "linear-gradient(160deg, var(--accent), transparent 75%)", cls: "mt-10 animate-[floaty_9s_ease-in-out_infinite_1s]" },
-  { bg: "linear-gradient(160deg, var(--accent-3), transparent 70%)", cls: "animate-[floaty_8s_ease-in-out_infinite_2s]" },
-];
 
 export default function CreatorSection() {
   return (
@@ -48,16 +43,7 @@ export default function CreatorSection() {
           </div>
 
           <Reveal>
-            <div aria-hidden className="relative mx-auto grid max-w-md grid-cols-3 gap-3 rounded-[2rem] border border-line bg-bg2 p-4 sm:p-6">
-              {tiles.map((t, i) => (
-                <div key={i} className={`relative aspect-[9/16] overflow-hidden rounded-2xl border border-line ${t.cls}`} style={{ background: t.bg }}>
-                  <span className="absolute inset-0 grid place-items-center">
-                    <span className="grid h-10 w-10 place-items-center rounded-full border border-fg/50 bg-bg/40 text-xs backdrop-blur">▶</span>
-                  </span>
-                  <span className="absolute bottom-2 left-2 font-mono text-[10px] uppercase tracking-widest text-fg/80">Reel 0{i + 1}</span>
-                </div>
-              ))}
-            </div>
+            <ReelTiles />
           </Reveal>
         </div>
 
