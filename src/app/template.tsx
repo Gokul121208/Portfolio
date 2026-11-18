@@ -30,8 +30,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
               className="h-full flex-1 origin-top border-b-[3px] border-accent bg-bg2"
               style={{ boxShadow: "0 8px 40px -4px var(--accent)" }}
               initial={{ scaleY: 1 }}
-              animate={{ scaleY: 0 }}
-              transition={{ duration: 0.75, delay: 0.5 + i * 0.07, ease }}
+              animate={{ scaleY: 0, transition: { duration: 0.75, delay: 0.5 + i * 0.07, ease } }}
               onAnimationComplete={i === PANELS - 1 ? () => setDone(true) : undefined}
             />
           ))}

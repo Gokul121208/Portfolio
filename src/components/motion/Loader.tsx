@@ -32,8 +32,8 @@ export default function Loader() {
       {show && (
         <motion.div
           key="loader"
-          exit={{ y: "-100%" }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          initial={{ y: 0 }}
+          exit={{ y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
           className="fixed inset-0 z-[200] flex flex-col justify-between bg-bg p-6 sm:p-10"
         >
           <div className="font-mono text-xs uppercase tracking-[0.3em] text-muted">Market opening · IST</div>
