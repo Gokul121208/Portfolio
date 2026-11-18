@@ -52,7 +52,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           loop
           playsInline
           preload="auto"
-          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          className="absolute inset-0 h-full w-full object-cover"
           aria-hidden
         />
       )}
