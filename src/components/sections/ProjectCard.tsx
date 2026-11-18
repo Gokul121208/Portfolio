@@ -9,18 +9,11 @@ const MAX_TAGS = 3;
 export default function ProjectCard({ project, index }: { project: Project; index: number }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const player = useRef<HTMLVideoElement>(null);
-  const preview = useRef<HTMLVideoElement>(null);
 
   const glow = (e: React.PointerEvent<HTMLElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
     e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
-  };
-
-  const hoverStart = () => void preview.current?.play().catch(() => {});
-  const hoverEnd = () => {
-    preview.current?.pause();
-    if (preview.current) preview.current.currentTime = 0;
   };
 
   const openVideo = () => {
@@ -53,12 +46,12 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       </div>
       {hasVideo && (
         <video
-          ref={preview}
           src={project.video}
+          autoPlay
           muted
           loop
           playsInline
-          preload="none"
+          preload="auto"
           className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           aria-hidden
         />
@@ -112,8 +105,6 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           data-cursor
           onClick={openVideo}
           onPointerMove={glow}
-          onMouseEnter={hoverStart}
-          onMouseLeave={hoverEnd}
           className={`${baseClass} ${liveClass} w-full cursor-pointer text-left`}
           style={{ ["--c" as string]: accentVar[project.accent] }}
           aria-label={`Play ${project.name} showreel`}
