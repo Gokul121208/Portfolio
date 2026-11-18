@@ -47,9 +47,6 @@ export const metadata: Metadata = {
     title: TITLE, description: DESC,
     images: ["/opengraph-image"],
   },
-  icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/favicon.ico" }],
-  },
   alternates: { canonical: BASE },
 };
 export const viewport: Viewport = { themeColor: "#07070b", width: "device-width", initialScale: 1 };
