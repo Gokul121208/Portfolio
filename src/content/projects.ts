@@ -9,8 +9,6 @@ export const projects: Project[] = [
     summary: "End-to-end social media management and video production, with lead generation turning views into booking enquiries.",
     services: ["Social Media Management", "Video Production", "Lead Generation"],
     accent: "accent",
-    video: "https://files.gokulm.in/Sengal.mp4",
-    portrait: true,
   },
   {
     slug: "pondy-srm-cruises",
@@ -29,6 +27,7 @@ export const projects: Project[] = [
     summary: "Social media management that presents the hotel's character and keeps guests engaged between stays.",
     services: ["Social Media Management"],
     accent: "accent",
+    video: "https://files.gokulm.in/Sengal.mp4",
     portrait: true,
   },
   {
