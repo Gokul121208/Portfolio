@@ -38,9 +38,19 @@ export default function ProjectCard({ project, index }: { project: Project; inde
   const hasVideo = !!project.video;
   const isStatic = !!project.noLink && !hasVideo;
 
-  const visualArea = (
-    <div className="relative aspect-[16/8] overflow-hidden rounded-t-[1.6rem]">
-      <ProjectVisual accent={project.accent} label="" className="h-full w-full" />
+  const cardInner = (
+    <>
+      {/* cursor glow */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background: "radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--c) 16%, transparent), transparent 65%)" }}
+      />
+
+      {/* background layer: gradient visual always, video fades in on hover */}
+      <div aria-hidden className="absolute inset-0">
+        <ProjectVisual accent={project.accent} label="" className="h-full" />
+      </div>
       {hasVideo && (
         <video
           ref={preview}
@@ -53,23 +63,12 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           aria-hidden
         />
       )}
-      {hasVideo && (
-        <span aria-hidden className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <span className="grid h-12 w-12 place-items-center rounded-full bg-bg/70 text-lg shadow-lg backdrop-blur-sm">▶</span>
-        </span>
-      )}
-    </div>
-  );
 
-  const cardBody = (
-    <>
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: "radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--c) 16%, transparent), transparent 65%)" }}
-      />
-      {visualArea}
-      <div className="relative flex flex-1 flex-col p-5">
+      {/* bottom gradient so text stays readable over video */}
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-bg2 via-bg2/80 to-transparent" />
+
+      {/* content */}
+      <div className="relative z-20 flex h-full flex-col justify-end p-5">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 font-mono text-xs text-muted">
             <span>{String(index + 1).padStart(2, "0")}</span>
@@ -86,9 +85,9 @@ export default function ProjectCard({ project, index }: { project: Project; inde
             </span>
           )}
         </div>
-        <h3 className="mt-4 font-display text-xl font-bold leading-tight tracking-tight sm:text-2xl">{project.name}</h3>
-        <p className="mt-2 line-clamp-2 text-sm text-muted">{project.tagline}</p>
-        <ul className="mt-auto flex flex-wrap gap-1.5 pt-5">
+        <h3 className="mt-3 font-display text-xl font-bold leading-tight tracking-tight sm:text-2xl">{project.name}</h3>
+        <p className="mt-1.5 line-clamp-2 text-sm text-muted">{project.tagline}</p>
+        <ul className="mt-4 flex flex-wrap gap-1.5">
           {project.services.slice(0, MAX_TAGS).map((s) => (
             <li key={s} className="rounded-full bg-fg/5 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-muted">{s}</li>
           ))}
@@ -98,14 +97,14 @@ export default function ProjectCard({ project, index }: { project: Project; inde
     </>
   );
 
-  const baseClass = "group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-bg2";
+  const baseClass = "group relative flex h-full min-h-[22rem] flex-col overflow-hidden rounded-[1.75rem] border border-line bg-bg2";
   const liveClass = "transition-[border-color,transform] duration-300 hover:border-[color:var(--c)] motion-safe:hover:-translate-y-1";
 
   return (
     <>
       {isStatic ? (
         <div className={baseClass} style={{ ["--c" as string]: accentVar[project.accent] }}>
-          {cardBody}
+          {cardInner}
         </div>
       ) : hasVideo ? (
         <button
@@ -119,7 +118,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           style={{ ["--c" as string]: accentVar[project.accent] }}
           aria-label={`Play ${project.name} showreel`}
         >
-          {cardBody}
+          {cardInner}
         </button>
       ) : (
         <Link
@@ -129,7 +128,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           className={`${baseClass} ${liveClass}`}
           style={{ ["--c" as string]: accentVar[project.accent] }}
         >
-          {cardBody}
+          {cardInner}
         </Link>
       )}
 
