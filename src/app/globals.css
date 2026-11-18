@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@custom-variant day (&:where([data-theme="day"], [data-theme="day"] *));
+
+:root,
+[data-theme="night"] {
+  --bg: #07070b;
+  --bg-2: #0d0d14;
+  --fg: #f4f4ee;
+  --muted: #9a9aab;
+  --line: #22222f;
+  --accent: #c6ff3d;
+  --accent-ink: #c6ff3d;
+  --accent-2: #8b5cf6;
+  --accent-3: #ff5d73;
+  --on-accent: #07070b;
+  color-scheme: dark;
+}
+
+[data-theme="day"] {
+  --bg: #f6f1e7;
+  --bg-2: #ede6d6;
+  --fg: #101014;
+  --muted: #55524b;
+  --line: #d8cfbb;
+  --accent: #ff5d4a;
+  --accent-ink: #ff5d4a;
+  --accent-2: #2a4bff;
+  --accent-3: #101014;
+  --on-accent: #101014;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accentink: var(--accent-ink);
+  --color-accent2: var(--accent-2);
+  --color-accent3: var(--accent-3);
+  --color-onaccent: var(--on-accent);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+html { scroll-behavior: auto; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body), system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent); color: var(--on-accent); }
+
+.font-display { font-family: var(--font-display), system-ui, sans-serif; }
+.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
+
+/* grain overlay */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+/* theme ripple (View Transitions) */
+::view-transition-old(root), ::view-transition-new(root) {
+  animation: none; mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: ripple 0.8s cubic-bezier(.7, 0, .2, 1) both;
+}
+@keyframes ripple {
+  from { clip-path: circle(0 at var(--rx, 50%) var(--ry, 50%)); }
+  to   { clip-path: circle(150% at var(--rx, 50%) var(--ry, 50%)); }
+}
+
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee 40s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+@keyframes pulse-ring {
+  0% { transform: scale(.9); opacity: .7; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@media (pointer: fine) { .has-cursor, .has-cursor a, .has-cursor button { cursor: none; } }
+/* the lightbox sits in the top layer, above the custom cursor, so give the real one back */
+@media (pointer: fine) { .has-cursor .reel-dialog, .has-cursor .reel-dialog video { cursor: auto; } .has-cursor .reel-dialog button { cursor: pointer; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .marquee-track { animation: none; }
+}
+
+@keyframes shine { 0% { transform: translateX(0); } 100% { transform: translateX(450%); } }
+
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
