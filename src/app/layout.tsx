@@ -9,6 +9,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/BackToTop";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import NavigationProgress from "@/components/NavigationProgress";
 
 const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           <SmoothScroll>
+            <NavigationProgress />
             <Loader />
             <Cursor />
             <Header />
