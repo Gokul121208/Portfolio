@@ -9,7 +9,7 @@ export default function VideoSlot({ video, poster, accent, title, portrait }: { 
           className={portrait
             ? "max-h-[80vh] w-auto max-w-xs rounded-3xl border border-line bg-black sm:max-w-sm"
             : "aspect-video w-full rounded-3xl border border-line bg-black"}
-          controls playsInline preload="none" poster={poster} aria-label={`${title} showreel`}
+          controls playsInline preload="none" controlsList="nodownload" onContextMenu={(e) => e.preventDefault()} poster={poster} aria-label={`${title} showreel`}
         >
           <source src={video} />
         </video>

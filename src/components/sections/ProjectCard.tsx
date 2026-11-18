@@ -141,6 +141,8 @@ export default function ProjectCard({ project, index }: { project: Project; inde
               controls
               playsInline
               preload="none"
+              controlsList="nodownload"
+              onContextMenu={(e) => e.preventDefault()}
               className="block aspect-[9/16] h-[90dvh] max-w-[95vw] rounded-2xl bg-black object-contain"
             />
             <button

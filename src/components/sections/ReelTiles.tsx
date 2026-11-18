@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 
-const FULL_REEL = "https://res.cloudinary.com/fi4eozvk/video/upload/v1794957737/build-with-goku-1-1080p.mp4";
+const R2_REEL = "https://files.gokulm.in/build-with-goku-1-1080p.mp4";
 
 // first tile plays a small looping preview; click opens the full video with sound.
 // the other two are abstract stand-ins until their videos are added.
@@ -17,7 +17,6 @@ export default function ReelTiles() {
 
   const open = () => {
     dialog.current?.showModal();
-    // click is a user gesture, so playing with sound is allowed
     void player.current?.play().catch(() => {});
   };
   const onClose = () => player.current?.pause();
@@ -40,7 +39,14 @@ export default function ReelTiles() {
           }
           return (
             <button key={i} type="button" onClick={open} aria-label="Play reel 01 with sound" className={`${box} cursor-pointer text-left transition-colors hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`} style={{ background: t.bg }}>
-              <video className="absolute inset-0 h-full w-full object-cover" src="/reels/build-with-goku-1.mp4" poster="/reels/build-with-goku-1.jpg" autoPlay muted loop playsInline preload="metadata" aria-hidden />
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                src={R2_REEL}
+                poster="/reels/build-with-goku-1.jpg"
+                autoPlay muted loop playsInline preload="none"
+                aria-hidden
+                onContextMenu={(e) => e.preventDefault()}
+              />
               <span className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-full bg-bg/60 text-[10px] backdrop-blur" aria-hidden>🔊</span>
               {label}
             </button>
@@ -56,7 +62,17 @@ export default function ReelTiles() {
         className="reel-dialog m-auto max-h-[100dvh] max-w-[100vw] overflow-visible bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm"
       >
         <div className="relative">
-          <video ref={player} src={FULL_REEL} poster="/reels/build-with-goku-1.jpg" controls playsInline preload="none" className="block aspect-[9/16] h-[90dvh] max-w-[95vw] rounded-2xl bg-black object-contain" />
+          <video
+            ref={player}
+            src={R2_REEL}
+            poster="/reels/build-with-goku-1.jpg"
+            controls
+            playsInline
+            preload="none"
+            controlsList="nodownload"
+            onContextMenu={(e) => e.preventDefault()}
+            className="block aspect-[9/16] h-[90dvh] max-w-[95vw] rounded-2xl bg-black object-contain"
+          />
           <button type="button" onClick={() => dialog.current?.close()} aria-label="Close video" className="absolute -top-3 -right-3 grid h-9 w-9 place-items-center rounded-full bg-accent text-onaccent shadow-lg sm:-right-12 sm:top-0">✕</button>
         </div>
       </dialog>
