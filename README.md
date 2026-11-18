@@ -56,7 +56,7 @@ The browser tests use Playwright and require a Chromium browser. Set `PW_CHROMIU
 
 ## Deploy to Cloudflare Workers
 
-This repository includes vinext and a Cloudflare Worker configuration. In Cloudflare, choose **Workers** and connect `Gokul121208/Portfolio`. Use the repository root, `npm run build:vinext` as the build command, and `npm run deploy:vinext` as the deploy command. Cloudflare's build image provides a Node.js version supported by the Worker tooling.
+This repository includes vinext and a Cloudflare Worker configuration. In Cloudflare, choose **Workers** and connect `Gokul121208/Portfolio`. Use the repository root, `npm run build:vinext` as the build command, and `npm run deploy:vinext` as the deploy command. Leave the build output directory empty. Wrangler deploys the Worker bundle produced in `dist/`. Cloudflare's build image provides a Node.js version supported by the Worker tooling.
 
 Set `NEXT_PUBLIC_SITE_URL` to the final site URL. To send contact-form email, add `RESEND_API_KEY` as a secret and `CONTACT_FROM` as an environment variable with a verified Resend sender. Without those email settings, visitors can still use the WhatsApp or email fallback.
 
