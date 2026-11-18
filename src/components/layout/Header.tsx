@@ -12,6 +12,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Close on path change as a safety net (e.g. back/forward navigation)
   useEffect(() => setOpen(false), [path]);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
@@ -59,7 +60,7 @@ export default function Header() {
           <motion.nav
             initial={{ height: 0 }}
             animate={{ height: "calc(100vh - 4rem)" }}
-            exit={{ height: 0 }}
+            exit={{ height: 0, transition: { duration: 0.15, ease: "easeIn" } }}
             transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
             className="overflow-hidden bg-bg md:hidden"
             aria-label="Mobile"
@@ -67,7 +68,7 @@ export default function Header() {
             <div className="flex flex-col gap-2 px-5 pt-8">
               {[{ href: "/", label: "Home" }, ...nav].map((n, i) => (
                 <motion.div key={n.href} initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.05 }}>
-                  <Link href={n.href} className="font-display text-4xl font-bold tracking-tight hover:text-accentink">
+                  <Link href={n.href} onClick={() => setOpen(false)} className="font-display text-4xl font-bold tracking-tight hover:text-accentink">
                     {n.label}
                   </Link>
                 </motion.div>
