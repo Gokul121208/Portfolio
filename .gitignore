@@ -5,3 +5,6 @@ node_modules/
 !.env.example
 test-results/
 *.tsbuildinfo
+/dist/
+.vinext/
+.cloudflare/

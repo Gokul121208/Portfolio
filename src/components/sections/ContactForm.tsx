@@ -17,10 +17,20 @@ export default function ContactForm() {
     setState("pending"); setErrors({}); setNotice("");
     try {
       const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      const body = await res.json().catch(() => ({}));
+      const payload: unknown = await res.json().catch(() => null);
+      const body = payload && typeof payload === "object" && !Array.isArray(payload)
+        ? payload as Record<string, unknown>
+        : {};
       if (res.ok) { setState("done"); f.reset(); return; }
-      if (res.status === 422) { setErrors(body.fieldErrors ?? {}); setState("idle"); return; }
-      if (res.status === 429) { setNotice(body.error ?? "Too many attempts. Try again shortly."); setState("idle"); return; }
+      if (res.status === 422) {
+        const fields = body.fieldErrors;
+        setErrors(fields && typeof fields === "object" && !Array.isArray(fields)
+          ? Object.fromEntries(Object.entries(fields).filter(([, messages]) => Array.isArray(messages) && messages.every((message) => typeof message === "string")))
+          : {});
+        setState("idle");
+        return;
+      }
+      if (res.status === 429) { setNotice(typeof body.error === "string" ? body.error : "Too many attempts. Try again shortly."); setState("idle"); return; }
       setState("fallback");
     } catch {
       setState("fallback");

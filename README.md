@@ -1,4 +1,4 @@
-# Gokul M — Portfolio
+# Gokul M: Portfolio
 
 **Digital marketer · Content creator · Founder · Forex & futures trader**
 
@@ -53,6 +53,14 @@ npm run e2e
 ```
 
 The browser tests use Playwright and require a Chromium browser. Set `PW_CHROMIUM_PATH` if using an existing local Chromium or Brave installation.
+
+## Deploy to Cloudflare Workers
+
+This repository includes vinext and a Cloudflare Worker configuration. In Cloudflare, choose **Workers** and connect `Gokul121208/Portfolio`. Use the repository root, `npm run build:vinext` as the build command, and `npm run deploy:vinext` as the deploy command. Cloudflare's build image provides a Node.js version supported by the Worker tooling.
+
+Set `NEXT_PUBLIC_SITE_URL` to the final site URL. To send contact-form email, add `RESEND_API_KEY` as a secret and `CONTACT_FROM` as an environment variable with a verified Resend sender. Without those email settings, visitors can still use the WhatsApp or email fallback.
+
+For a local Workers build, run `npm run build:vinext`. The original `npm run dev` and `npm run build` commands remain available for Next.js development.
 
 ## Stack
 
