@@ -39,6 +39,7 @@ export const projects: Project[] = [
       "Worked with NR Congress on one part of their election campaign. This was a contribution to the campaign, not the full campaign.",
     services: ["Election Campaign Support"],
     accent: "accent2",
+    noLink: true,
   },
   {
     slug: "pondy-gyp-sea-boating",

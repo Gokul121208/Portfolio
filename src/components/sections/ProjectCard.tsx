@@ -9,6 +9,7 @@ const MAX_TAGS = 3;
 export default function ProjectCard({ project, index }: { project: Project; index: number }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const player = useRef<HTMLVideoElement>(null);
+  const preview = useRef<HTMLVideoElement>(null);
 
   const glow = (e: React.PointerEvent<HTMLElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -16,17 +17,49 @@ export default function ProjectCard({ project, index }: { project: Project; inde
     e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
 
+  const hoverStart = () => void preview.current?.play().catch(() => {});
+  const hoverEnd = () => {
+    preview.current?.pause();
+    if (preview.current) preview.current.currentTime = 0;
+  };
+
   const openVideo = () => {
     dialog.current?.showModal();
+    document.documentElement.setAttribute("data-video-open", "");
     void player.current?.play().catch(() => {});
   };
   const closeVideo = () => {
     player.current?.pause();
     dialog.current?.close();
+    document.documentElement.removeAttribute("data-video-open");
   };
 
   const extra = project.services.length - MAX_TAGS;
   const hasVideo = !!project.video;
+  const isStatic = !!project.noLink && !hasVideo;
+
+  const visualArea = (
+    <div className="relative aspect-[16/8] overflow-hidden rounded-t-[1.6rem]">
+      <ProjectVisual accent={project.accent} label="" className="h-full w-full" />
+      {hasVideo && (
+        <video
+          ref={preview}
+          src={project.video}
+          muted
+          loop
+          playsInline
+          preload="none"
+          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          aria-hidden
+        />
+      )}
+      {hasVideo && (
+        <span aria-hidden className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="grid h-12 w-12 place-items-center rounded-full bg-bg/70 text-lg shadow-lg backdrop-blur-sm">▶</span>
+        </span>
+      )}
+    </div>
+  );
 
   const cardBody = (
     <>
@@ -35,14 +68,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
         className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{ background: "radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--c) 16%, transparent), transparent 65%)" }}
       />
-      <div className="relative">
-        <ProjectVisual accent={project.accent} label="" className="aspect-[16/8]" />
-        {hasVideo && (
-          <span aria-hidden className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <span className="grid h-12 w-12 place-items-center rounded-full bg-bg/70 text-lg shadow-lg backdrop-blur-sm">▶</span>
-          </span>
-        )}
-      </div>
+      {visualArea}
       <div className="relative flex flex-1 flex-col p-5">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 font-mono text-xs text-muted">
@@ -54,9 +80,11 @@ export default function ProjectCard({ project, index }: { project: Project; inde
               </span>
             )}
           </div>
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-sm transition-all duration-300 group-hover:border-[color:var(--c)] group-hover:bg-[color:var(--c)] group-hover:text-onaccent motion-safe:group-hover:rotate-45">
-            {hasVideo ? "▶" : "↗"}
-          </span>
+          {!isStatic && (
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-sm transition-all duration-300 group-hover:border-[color:var(--c)] group-hover:bg-[color:var(--c)] group-hover:text-onaccent motion-safe:group-hover:rotate-45">
+              {hasVideo ? "▶" : "↗"}
+            </span>
+          )}
         </div>
         <h3 className="mt-4 font-display text-xl font-bold leading-tight tracking-tight sm:text-2xl">{project.name}</h3>
         <p className="mt-2 line-clamp-2 text-sm text-muted">{project.tagline}</p>
@@ -70,15 +98,24 @@ export default function ProjectCard({ project, index }: { project: Project; inde
     </>
   );
 
+  const baseClass = "group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-bg2";
+  const liveClass = "transition-[border-color,transform] duration-300 hover:border-[color:var(--c)] motion-safe:hover:-translate-y-1";
+
   return (
     <>
-      {hasVideo ? (
+      {isStatic ? (
+        <div className={baseClass} style={{ ["--c" as string]: accentVar[project.accent] }}>
+          {cardBody}
+        </div>
+      ) : hasVideo ? (
         <button
           type="button"
           data-cursor
           onClick={openVideo}
           onPointerMove={glow}
-          className="group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-[1.75rem] border border-line bg-bg2 text-left transition-[border-color,transform] duration-300 hover:border-[color:var(--c)] motion-safe:hover:-translate-y-1"
+          onMouseEnter={hoverStart}
+          onMouseLeave={hoverEnd}
+          className={`${baseClass} ${liveClass} w-full cursor-pointer text-left`}
           style={{ ["--c" as string]: accentVar[project.accent] }}
           aria-label={`Play ${project.name} showreel`}
         >
@@ -89,7 +126,7 @@ export default function ProjectCard({ project, index }: { project: Project; inde
           href={`/projects/${project.slug}`}
           data-cursor
           onPointerMove={glow}
-          className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-line bg-bg2 transition-[border-color,transform] duration-300 hover:border-[color:var(--c)] motion-safe:hover:-translate-y-1"
+          className={`${baseClass} ${liveClass}`}
           style={{ ["--c" as string]: accentVar[project.accent] }}
         >
           {cardBody}
@@ -99,10 +136,13 @@ export default function ProjectCard({ project, index }: { project: Project; inde
       {hasVideo && (
         <dialog
           ref={dialog}
-          onClose={() => player.current?.pause()}
+          onClose={() => {
+            player.current?.pause();
+            document.documentElement.removeAttribute("data-video-open");
+          }}
           onClick={(e) => e.target === dialog.current && closeVideo()}
           aria-label={`${project.name} showreel`}
-          className="m-auto max-h-[100dvh] max-w-[100vw] overflow-visible bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm"
+          className="project-dialog m-auto max-h-[100dvh] max-w-[100vw] overflow-visible bg-transparent p-0 backdrop:bg-black/80 backdrop:backdrop-blur-sm"
         >
           <div className="relative">
             <video

@@ -96,6 +96,7 @@ body::before {
 @media (pointer: fine) { .has-cursor, .has-cursor a, .has-cursor button { cursor: none; } }
 /* the lightbox sits in the top layer, above the custom cursor, so give the real one back */
 @media (pointer: fine) { .has-cursor .reel-dialog, .has-cursor .reel-dialog video { cursor: auto; } .has-cursor .reel-dialog button { cursor: pointer; } }
+@media (pointer: fine) { .has-cursor .project-dialog, .has-cursor .project-dialog video { cursor: auto; } .has-cursor .project-dialog button { cursor: pointer; } .project-dialog::backdrop { cursor: default; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }

@@ -9,6 +9,7 @@ export type Project = {
   video?: string;
   poster?: string;
   portrait?: boolean;
+  noLink?: boolean;
   accent: Accent;
 };
 export type Service = { id: string; title: string; blurb: string; tag: string };
