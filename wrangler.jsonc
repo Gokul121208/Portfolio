@@ -3,6 +3,9 @@
   "name": "gokul-portfolio",
   "compatibility_date": "2026-11-18",
   "main": "vinext/server/fetch-handler",
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://gokulm.in"
+  },
   "assets": {
     "directory": "dist/client",
     "html_handling": "none",
