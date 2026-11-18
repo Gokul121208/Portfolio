@@ -9,6 +9,8 @@ export const projects: Project[] = [
     summary: "End-to-end social media management and video production, with lead generation turning views into booking enquiries.",
     services: ["Social Media Management", "Video Production", "Lead Generation"],
     accent: "accent",
+    video: "https://files.gokulm.in/Sengal.mp4",
+    portrait: true,
   },
   {
     slug: "pondy-srm-cruises",
@@ -17,6 +19,8 @@ export const projects: Project[] = [
     summary: "Content planning, social media, video, Meta ads, lead generation and automation working as one connected system.",
     services: ["Content Planning", "Social Media Management", "Video Production", "Meta Ads", "Lead Generation", "Automation"],
     accent: "accent2",
+    video: "https://files.gokulm.in/SRM%20Cruise.mp4",
+    portrait: true,
   },
   {
     slug: "sengal-boutique-hotel",
@@ -25,6 +29,7 @@ export const projects: Project[] = [
     summary: "Social media management that presents the hotel's character and keeps guests engaged between stays.",
     services: ["Social Media Management"],
     accent: "accent",
+    portrait: true,
   },
   {
     slug: "nr-congress-election-campaign",
@@ -43,6 +48,8 @@ export const projects: Project[] = [
     services: ["Video Production", "Meta Ads", "Lead Generation"],
     ongoing: true,
     accent: "accent3",
+    video: "https://files.gokulm.in/Gypsea%2005.mp4",
+    portrait: true,
   },
 ];
 

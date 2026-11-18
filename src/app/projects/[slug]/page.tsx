@@ -33,7 +33,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <SplitText as="h1" text={p.name} className="mt-4 font-display text-5xl font-bold leading-[0.9] tracking-tighter sm:text-8xl" />
         <Reveal delay={0.3}><p className="mt-5 max-w-2xl text-xl text-muted">{p.tagline}</p></Reveal>
       </Container>
-      <Container className="py-8"><Reveal><VideoSlot video={p.video} poster={p.poster} accent={p.accent} title={p.name} /></Reveal></Container>
+      <Container className="py-8"><Reveal><VideoSlot video={p.video} poster={p.poster} accent={p.accent} title={p.name} portrait={p.portrait} /></Reveal></Container>
       <Container className="grid gap-12 py-16 md:grid-cols-[1.2fr_1fr]">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-accentink">The work</p>
