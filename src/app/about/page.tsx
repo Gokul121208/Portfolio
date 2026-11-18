@@ -6,7 +6,11 @@ import Reveal from "@/components/motion/Reveal";
 import CTA from "@/components/sections/CTA";
 import { profile } from "@/content/profile";
 
-export const metadata: Metadata = { title: "About", description: "Gokul M: education, skills, trading journey and the agency he founded." };
+export const metadata: Metadata = {
+  title: "About",
+  description: "Gokul M — B.Tech IT graduate pursuing MBA in Marketing, founder of The Moments Lab AI Marketing Agency and a disciplined Forex & Futures trader. Learn about the person behind the brand.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in"}/about` },
+};
 
 export default function About() {
   return (

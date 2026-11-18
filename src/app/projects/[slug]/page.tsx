@@ -7,6 +7,9 @@ import VideoSlot from "@/components/VideoSlot";
 import Reveal from "@/components/motion/Reveal";
 import SplitText from "@/components/motion/SplitText";
 import CTA from "@/components/sections/CTA";
+import JsonLd from "@/components/JsonLd";
+
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -14,7 +17,18 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const p = getProject((await params).slug);
-  return p ? { title: p.name, description: p.summary } : {};
+  if (!p) return {};
+  return {
+    title: p.name,
+    description: `${p.tagline} — ${p.summary}`,
+    alternates: { canonical: `${BASE}/projects/${p.slug}` },
+    openGraph: {
+      title: `${p.name} | Gokul M`,
+      description: p.summary,
+      url: `${BASE}/projects/${p.slug}`,
+      type: "article",
+    },
+  };
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -25,8 +39,31 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const next = projects[(i + 1) % projects.length];
   const prev = projects[(i - 1 + projects.length) % projects.length];
 
+  const caseStudySchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: p.name,
+    description: p.summary,
+    author: { "@type": "Person", name: "Gokul M", url: BASE },
+    publisher: { "@type": "Person", name: "Gokul M" },
+    url: `${BASE}/projects/${p.slug}`,
+    keywords: p.services.join(", "),
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: BASE },
+      { "@type": "ListItem", position: 2, name: "Projects", item: `${BASE}/projects` },
+      { "@type": "ListItem", position: 3, name: p.name, item: `${BASE}/projects/${p.slug}` },
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={caseStudySchema} />
+      <JsonLd data={breadcrumbSchema} />
       <Container className="pb-8 pt-36 sm:pt-44">
         <Link href="/projects" className="font-mono text-xs uppercase tracking-widest text-muted hover:text-accentink">← All projects</Link>
         {p.ongoing && <p className="mt-6 w-fit rounded-full bg-accent px-3 py-1 font-mono text-xs uppercase text-onaccent">Ongoing</p>}

@@ -6,7 +6,11 @@ import CTA from "@/components/sections/CTA";
 import { projects } from "@/content/projects";
 import { profile } from "@/content/profile";
 
-export const metadata: Metadata = { title: "Projects", description: "Freelance projects: Red Sea Boating, Pondy SRM Cruises, Pondy Gyp Sea Boating, Sengal Boutique Hotel." };
+export const metadata: Metadata = {
+  title: "Client Projects",
+  description: "Real-world digital marketing campaigns by Gokul M: social media, video production and lead generation for Red Sea Boating, Pondy SRM Cruises, Sengal Boutique Hotel and Pondy Gyp Sea Boating.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in"}/projects` },
+};
 
 export default function Projects() {
   return (

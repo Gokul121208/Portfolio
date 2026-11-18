@@ -15,12 +15,42 @@ const display = Space_Grotesk({ subsets: ["latin"], variable: "--font-display", 
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in";
+const TITLE = "Gokul M | Digital Marketer, Forex Trader & Content Creator";
+const DESC =
+  "Gokul M is a digital marketer, Forex & Futures trader, content creator and founder of The Moments Lab AI Marketing Agency — helping brands grow through social media, video production, Meta ads and AI-powered lead generation.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3100"),
-  title: { default: "Gokul M | Digital Marketer, Trader & Creator", template: "%s | Gokul M" },
-  description:
-    "Gokul M is a digital marketer, Forex & Futures trader and content creator, and founder of The Moments Lab AI Marketing Agency.",
-  openGraph: { title: "Gokul M", description: "Digital Marketer · Forex & Futures Trader · Content Creator", type: "website" },
+  metadataBase: new URL(BASE),
+  title: { default: TITLE, template: "%s | Gokul M" },
+  description: DESC,
+  keywords: [
+    "Gokul M", "digital marketer", "content creator", "Forex trader", "Futures trader",
+    "social media marketing", "video production", "Meta ads", "lead generation",
+    "The Moments Lab", "AI marketing agency", "Pondicherry digital marketer",
+    "Instagram marketing", "short-form video", "marketing automation",
+  ],
+  authors: [{ name: "Gokul M", url: BASE }],
+  creator: "Gokul M",
+  publisher: "Gokul M",
+  robots: {
+    index: true, follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  openGraph: {
+    type: "website", locale: "en_IN", url: BASE, siteName: "Gokul M",
+    title: TITLE, description: DESC,
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Gokul M — Digital Marketer, Forex Trader & Content Creator" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE, description: DESC,
+    images: ["/opengraph-image"],
+  },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/favicon.ico" }],
+  },
+  alternates: { canonical: BASE },
 };
 export const viewport: Viewport = { themeColor: "#07070b", width: "device-width", initialScale: 1 };
 

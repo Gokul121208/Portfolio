@@ -4,7 +4,11 @@ import Timeline from "@/components/sections/Timeline";
 import CTA from "@/components/sections/CTA";
 import { experience } from "@/content/experience";
 
-export const metadata: Metadata = { title: "Experience", description: "Founder of The Moments Lab AI Marketing Agency, plus roles at Vima Insurance Brokers, Deivamey Digital Marketing Agency and Blackwins Tech Solutions." };
+export const metadata: Metadata = {
+  title: "Experience",
+  description: "Gokul M's professional journey: founder of The Moments Lab AI Marketing Agency and earlier roles as Visual Content Specialist at Vima Insurance Brokers, digital marketer at Deivamey Digital Marketing Agency and web developer at Blackwins Tech Solutions.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in"}/experience` },
+};
 
 export default function Experience() {
   return (

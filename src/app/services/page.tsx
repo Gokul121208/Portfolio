@@ -4,7 +4,11 @@ import ServiceBook from "@/components/sections/ServiceBook";
 import Process from "@/components/sections/Process";
 import CTA from "@/components/sections/CTA";
 
-export const metadata: Metadata = { title: "Services", description: "Social media, content, video, ads, lead generation, websites and AI marketing automation." };
+export const metadata: Metadata = {
+  title: "Marketing Services",
+  description: "Professional digital marketing services by Gokul M: social media management, content creation, short-form video production, Meta ads, lead generation, website development and AI marketing automation — built to work as one growth engine.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in"}/services` },
+};
 
 export default function Services() {
   return (

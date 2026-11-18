@@ -4,7 +4,11 @@ import ContactForm from "@/components/sections/ContactForm";
 import { profile } from "@/content/profile";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-export const metadata: Metadata = { title: "Contact", description: "Get in touch with Gokul M by form, email, phone or WhatsApp." };
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Get in touch with Gokul M for social media marketing, video production, Meta ads or website development. Reach out via WhatsApp, email or the contact form — usually replies within 24 hours.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in"}/contact` },
+};
 
 export default function Contact() {
   return (
