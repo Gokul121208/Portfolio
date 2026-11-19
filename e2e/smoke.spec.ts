@@ -218,6 +218,27 @@ test("instagram card: full-width button on phones, compact on desktop, no overfl
   expect((await link.boundingBox())!.width).toBeLessThan(400); // not stretched on desktop
 });
 
+test("home: each Instagram reel opens its own video", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => sessionStorage.setItem("loaded", "1"));
+  await page.goto("/");
+
+  const secondTile = page.getByRole("button", { name: "Play reel 02 with sound" });
+  // Wait for the reveal wrapper to settle after hydration before clicking.
+  await expect(secondTile.locator("xpath=../..")).toHaveCSS("opacity", "1");
+  await secondTile.click();
+  const second = page.getByRole("dialog", { name: "Reel 02" });
+  await expect(second.locator("video")).toHaveAttribute("src", "https://files.gokulm.in/Build%20With%20Goku%202.mp4");
+  await second.getByRole("button", { name: "Close video" }).click();
+  await expect(second).toBeHidden();
+
+  await page.getByRole("button", { name: "Play reel 01 with sound" }).click();
+  const first = page.getByRole("dialog", { name: "Reel 01" });
+  await expect(first.locator("video")).toHaveAttribute("src", "https://files.gokulm.in/build-with-goku-1-1080p.mp4");
+  await page.keyboard.press("Escape");
+  await expect(first).toBeHidden();
+});
+
 test("dark is the default: a stale saved Day choice from an older build is ignored, a new choice sticks", async ({ browser }) => {
   const ctx = await browser.newContext({ colorScheme: "light" }); // even a light system gets Night first
   await ctx.addInitScript(() => localStorage.setItem("theme", "day")); // key used by earlier builds
