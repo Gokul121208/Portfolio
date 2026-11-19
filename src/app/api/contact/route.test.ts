@@ -16,8 +16,9 @@ afterEach(() => {
 });
 
 describe("POST /api/contact", () => {
-  test("sends contact messages to the Gokul mailbox with the visitor as reply-to", async () => {
+  test("sends from the portfolio domain to Gokul with the visitor as reply-to", async () => {
     vi.stubEnv("RESEND_API_KEY", "test-key");
+    vi.stubEnv("CONTACT_FROM", undefined);
     const fetch = vi.fn<typeof globalThis.fetch>(async () => Response.json({ id: "test-email" }));
     vi.stubGlobal("fetch", fetch);
 
@@ -27,6 +28,7 @@ describe("POST /api/contact", () => {
     expect(fetch).toHaveBeenCalledOnce();
     const [, options] = fetch.mock.calls[0];
     expect(JSON.parse(String(options?.body))).toMatchObject({
+      from: "Portfolio <portfolio@gokulm.in>",
       to: "goku@gokulm.in",
       reply_to: valid.email,
     });
