@@ -11,6 +11,7 @@ import TestimonialsTeaser from "@/components/sections/TestimonialsTeaser";
 import CTA from "@/components/sections/CTA";
 import PriceLine from "@/components/sections/PriceLine";
 import JsonLd from "@/components/JsonLd";
+import { profile } from "@/content/profile";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://gokulm.in";
 
@@ -37,7 +38,7 @@ const personSchema = {
     "Meta Ads", "Lead Generation", "Forex Trading", "Futures Trading",
     "Content Creation", "AI Marketing Automation", "Website Development",
   ],
-  email: "gokulamurugan40@gmail.com",
+  email: profile.email,
   telephone: "+919159348778",
   address: { "@type": "PostalAddress", addressCountry: "IN", addressRegion: "Puducherry" },
 };

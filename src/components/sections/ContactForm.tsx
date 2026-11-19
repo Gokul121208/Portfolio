@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import { profile } from "@/content/profile";
+import ContactSuccess from "./ContactSuccess";
 
 type State = "idle" | "pending" | "done" | "fallback";
 
@@ -37,16 +38,7 @@ export default function ContactForm() {
     }
   }
 
-  if (state === "done")
-    return (
-      <div className="grid min-h-[22rem] place-items-center rounded-3xl border border-accent bg-bg2 p-8 text-center">
-        <div>
-          <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-full bg-accent text-3xl text-onaccent">✓</div>
-          <p className="font-display text-3xl font-bold">Message sent!</p>
-          <p className="mt-2 text-muted">I&apos;ll get back to you soon.</p>
-        </div>
-      </div>
-    );
+  if (state === "done") return <ContactSuccess />;
 
   const field = "w-full rounded-2xl border border-line bg-bg2 px-4 py-3.5 outline-none transition-colors focus:border-accentink";
   return (

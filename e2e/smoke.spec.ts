@@ -55,7 +55,38 @@ test("contact form falls back to WhatsApp/email when email is not configured", a
   await page.getByLabel("Message").fill("I would like to discuss a campaign.");
   await page.getByRole("button", { name: /Send message/ }).click();
   await expect(page.getByText(/Couldn't send the form/)).toBeVisible();
+  await expect(page.locator("form").getByRole("link", { name: "goku@gokulm.in" })).toHaveAttribute("href", "mailto:goku@gokulm.in");
 });
+
+for (const reducedMotion of ["no-preference", "reduce"] as const) {
+  test(`contact success fits the viewport with motion set to ${reducedMotion}`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 700 });
+    await page.emulateMedia({ reducedMotion });
+    await page.route("**/api/contact", (route) => route.fulfill({ json: { ok: true } }));
+    await page.goto("/contact");
+    await page.getByLabel("Your name").fill("Asha");
+    await page.getByLabel("Email").fill("asha@example.com");
+    await page.getByLabel("Message").fill("I would like to discuss a campaign.");
+    await page.getByRole("button", { name: /Send message/ }).click();
+
+    const title = page.getByRole("heading", { name: "Message sent!" });
+    await expect(title).toBeFocused();
+    await expect(title).toBeInViewport();
+    const artwork = page.getByRole("region", { name: "Message sent!" }).locator("svg");
+    const hasAnimation = await artwork.evaluate(
+      (element) => element.getAnimations({ subtree: true }).length > 0,
+    );
+    expect(hasAnimation).toBe(reducedMotion === "no-preference");
+
+    for (const width of [320, 390, 768, 1024, 1440, 1920]) {
+      await page.setViewportSize({ width, height: 800 });
+      const bounds = (await artwork.boundingBox())!;
+      expect(bounds.x).toBeGreaterThanOrEqual(0);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    }
+  });
+}
 
 test("reduced motion: hero headline visible, no canvas, no hydration/console errors", async ({ page }) => {
   const errors: string[] = [];

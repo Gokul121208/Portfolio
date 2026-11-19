@@ -1,0 +1,55 @@
+.panel {
+  background: radial-gradient(
+    ellipse at 70% 32%,
+    color-mix(in srgb, var(--accent) 10%, transparent),
+    transparent 60%
+  ), var(--bg-2);
+}
+
+.plane {
+  opacity: 0;
+  transform-origin: 0 0;
+}
+
+.arrival {
+  transform-origin: 274px 59px;
+}
+
+.sparkles {
+  opacity: .68;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .plane {
+    animation: flight 910ms cubic-bezier(.2, .75, .24, 1) both;
+  }
+
+  .arrival {
+    animation: arrival 440ms 680ms cubic-bezier(.2, .75, .24, 1) both;
+  }
+
+  .sparkles {
+    animation: glint 620ms 730ms ease-out both;
+  }
+}
+
+@keyframes flight {
+  0% { transform: translate(55px, 139px) rotate(-26deg); opacity: 0; }
+  15% { opacity: 1; }
+  37% { transform: translate(128px, 108px) rotate(4deg); }
+  63% { transform: translate(210px, 122px) rotate(-3deg); }
+  86% { opacity: 1; }
+  100% { transform: translate(274px, 59px) rotate(-34deg) scale(.72); opacity: 0; }
+}
+
+@keyframes arrival {
+  0% { transform: scale(.6); opacity: 0; }
+  65% { transform: scale(1.09); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glint {
+  from { opacity: 0; }
+  44% { opacity: 1; }
+  to { opacity: .68; }
+}

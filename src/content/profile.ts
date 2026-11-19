@@ -1,7 +1,7 @@
 export const profile = {
   name: "Gokul M" as const,
   identities: ["Digital Marketer", "Forex & Futures Trader", "Content Creator", "Founder"],
-  email: "gokulamurugan40@gmail.com",
+  email: "goku@gokulm.in",
   phone: "+91 9159348778",
   whatsapp: "919159348778",
   agency: "The Moments Lab AI Marketing Agency",

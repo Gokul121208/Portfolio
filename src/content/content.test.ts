@@ -27,7 +27,7 @@ describe("content", () => {
   test("profile", () => {
     expect(profile.name).toBe("Gokul M");
     expect(profile.whatsapp).toBe("919159348778");
-    expect(profile.email).toBe("gokulamurugan40@gmail.com");
+    expect(profile.email).toBe("goku@gokulm.in");
   });
   test("experience lists the founded company and all three jobs", () => {
     expect(experience.map((e) => e.company)).toEqual([
