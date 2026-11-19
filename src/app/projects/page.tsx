@@ -13,11 +13,16 @@ export const metadata: Metadata = {
 };
 
 export default function Projects() {
+  const orderedProjects = [
+    ...projects.filter((project) => project.video),
+    ...projects.filter((project) => !project.video),
+  ];
+
   return (
     <>
-      <PageHero eyebrow="Projects" title="Real brands. Real results." intro={<><strong className="font-semibold text-accentink">{profile.agency}</strong> · Freelance campaigns with content, video and lead generation. Showreels are landing soon.</>} />
+      <PageHero eyebrow="Projects" title="Real brands. Real results." intro={<><strong className="font-semibold text-accentink">{profile.agency}</strong> · Freelance campaigns with content, video and lead generation.</>} />
       <Container className="grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((p, i) => (
+        {orderedProjects.map((p, i) => (
           <Reveal key={p.slug} className="h-full"><ProjectCard project={p} index={i} /></Reveal>
         ))}
       </Container>

@@ -38,7 +38,7 @@ test("whatsapp menu opens and links carry the service", async ({ page }) => {
 });
 
 test("project without video shows the coming-soon slot", async ({ page }) => {
-  await page.goto("/projects/pondy-srm-cruises");
+  await page.goto("/projects/red-sea-boating");
   await expect(page.getByText("Video coming soon")).toBeVisible();
 });
 
@@ -186,11 +186,27 @@ test("experience page lists the founded company (2025 – Present) and all three
   await expect(page.getByRole("heading", { name: "Content Specialist & Performance Marketer" })).toBeVisible();
 });
 
-test("projects: all five projects are listed and the election campaign case page works", async ({ page }) => {
+test("home: recent work features Pondy Gyp Sea Boating and Pondy SRM Cruises showreels", async ({ page }) => {
+  await page.goto("/");
+  const recentWork = page.locator("section").filter({
+    has: page.getByRole("heading", { name: "Recent work." }),
+  });
+  await expect(recentWork.getByRole("heading", { level: 3 })).toHaveText([
+    "Pondy Gyp Sea Boating",
+    "Pondy SRM Cruises",
+  ]);
+  await expect(recentWork.getByRole("button", { name: /^Play .+ showreel$/ })).toHaveCount(2);
+});
+
+test("projects: cards with video come first and the election campaign case page works", async ({ page }) => {
   await page.goto("/projects");
-  for (const n of ["Red Sea Boating", "Pondy SRM Cruises", "Pondy Gyp Sea Boating", "Sengal Boutique Hotel", "NR Congress Election Campaign"]) {
-    await expect(page.getByRole("heading", { name: n })).toBeVisible();
-  }
+  await expect(page.getByRole("heading", { level: 3 })).toHaveText([
+    "Pondy SRM Cruises",
+    "Sengal Boutique Hotel",
+    "Pondy Gyp Sea Boating",
+    "Red Sea Boating",
+    "NR Congress Election Campaign",
+  ]);
   const res = await page.goto("/projects/nr-congress-election-campaign");
   expect(res?.status()).toBe(200);
   await expect(page.getByRole("heading", { level: 1, name: "NR Congress Election Campaign" })).toBeVisible();
