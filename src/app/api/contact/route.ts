@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { contactSchema } from "@/lib/contact";
 import { clientKey, rateLimit } from "@/lib/rateLimit";
-import { profile } from "@/content/profile";
 
 const MAX_BODY = 16_000;
 
@@ -41,7 +40,7 @@ export async function POST(req: Request) {
     const resend = new Resend(key);
     const { error } = await resend.emails.send({
       from: process.env.CONTACT_FROM ?? "Portfolio <onboarding@resend.dev>",
-      to: profile.email,
+      to: "goku@gokulm.in",
       replyTo: email,
       subject: `New portfolio message from ${name}`,
       text: `From: ${name} <${email}>\n\n${message}`,
